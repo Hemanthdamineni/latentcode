@@ -369,37 +369,54 @@ def record_cast(name: str, command: str, out_cast: Path) -> None:
 # ---------------------------------------------------------------------------
 
 def render_cast(cast_path: Path, mp4_path: Path, font_size: int = 16) -> None:
-    """Render a .cast to MP4 using agg.
+    """Render a .cast to MP4 via agg (GIF) → ffmpeg (H.264).
 
-    agg is the official asciinema-to-MP4 converter (Rust). It uses
-    alacritty's terminal renderer for proper font hinting and exact
-    frame timing. The output resolution is computed from font size and
-    terminal dimensions.
+    agg only produces GIF output, regardless of the extension you give
+    it. We give it a .gif path so the file is correctly identified,
+    then convert the GIF to a proper H.264 MP4 at 1280x720 with
+    high profile (player-compatible).
 
-    Important: agg's `--idle-time-limit` is applied to IDLE GAPS in the
-    recording (periods with no output). Setting it to 3 means any 3+
-    second idle gap is collapsed to 3s in the output. For a 30s video
-    where the command finishes in 5s of actual output, that gives us
-    ~3.5s of output + 25s of waiting — not what we want.
-
-    We pass --idle-time-limit 30 to be safe (longer than our longest
-    segment's real duration) and let agg do the right thing.
+    agg's GIF is a real terminal render — proper font hinting via
+    alacritty's renderer, exact frame timing. ffmpeg converts it to
+    H.264, optionally pad-letterboxing to 1280x720 if agg's output
+    aspect ratio differs.
     """
     mp4_path.parent.mkdir(parents=True, exist_ok=True)
     if mp4_path.exists():
         mp4_path.unlink()
-    cmd = [
+    gif_path = mp4_path.with_suffix(".gif")  # agg insists on .gif
+    if gif_path.exists():
+        gif_path.unlink()
+
+    # Pass 1: agg → animated GIF (agg ignores the extension we give it;
+    # it always writes GIF. So we give it a .gif path to be honest.)
+    cmd_agg = [
         AGG_BIN,
         str(cast_path),
-        str(mp4_path),
+        str(gif_path),
         "--cols", str(COLS),
         "--rows", str(ROWS),
         "--font-size", str(font_size),
         "--theme", "dracula",
-        "--speed", "1.0",          # realtime
-        "--idle-time-limit", "60",  # don't cap idles (max=60s)
+        "--speed", "1.0",
+        "--idle-time-limit", "60",
     ]
-    subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    subprocess.run(cmd_agg, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    if not gif_path.exists():
+        raise RuntimeError(f"agg did not write {gif_path}")
+
+    # Pass 2: GIF → H.264 MP4 at 1280x720 with high profile
+    cmd_ffmpeg = [
+        "ffmpeg", "-y", "-i", str(gif_path),
+        "-vf", "scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2:color=black",
+        "-c:v", "libx264", "-profile:v", "high", "-level", "4.0",
+        "-pix_fmt", "yuv420p", "-preset", "medium", "-crf", "20",
+        "-r", "30", "-an", "-movflags", "+faststart",
+        str(mp4_path),
+    ]
+    subprocess.run(cmd_ffmpeg, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+    gif_path.unlink()
     print(f"  rendered: {mp4_path.name}")
 
 
@@ -408,6 +425,15 @@ def render_cast(cast_path: Path, mp4_path: Path, font_size: int = 16) -> None:
 # ---------------------------------------------------------------------------
 
 def concat_segments(segments: list[Path], final_mp4: Path) -> None:
+    """Concatenate the segment MP4s into the final video.
+
+    Each segment is now a real H.264 MP4 at 1280x720 (no audio). We
+    add a silent audio track per segment and re-encode to a uniform
+    output with high profile for player compatibility.
+
+    Using `-c copy` here would risk stream-parameter mismatches; we
+    re-encode with `medium` preset (fast enough, good quality).
+    """
     final_mp4.parent.mkdir(parents=True, exist_ok=True)
     if final_mp4.exists():
         final_mp4.unlink()
@@ -416,13 +442,14 @@ def concat_segments(segments: list[Path], final_mp4: Path) -> None:
         for s in segments:
             safe = str(s.resolve()).replace("'", "'\\''")
             f.write(f"file '{safe}'\n")
-    # Re-encode to a uniform stream so concat works across sources from
-    # different encoders (Marp h264 vs agg h264). Use a fast preset.
     cmd = ["ffmpeg", "-y", "-f", "concat", "-safe", "0",
            "-i", str(list_file),
-           "-c:v", "libx264", "-preset", "ultrafast", "-crf", "23",
-           "-pix_fmt", "yuv420p", "-r", "30", "-s", "1280x720",
-           "-c:a", "aac", "-b:a", "192k", "-ar", "44100", "-ac", "2",
+           "-f", "lavfi", "-i", "anullsrc=r=44100:cl=stereo",
+           "-c:v", "libx264", "-profile:v", "high", "-level", "4.0",
+           "-pix_fmt", "yuv420p", "-r", "30", "-preset", "medium", "-crf", "20",
+           "-c:a", "aac", "-b:a", "128k", "-ar", "44100", "-ac", "2",
+           "-map", "0:v", "-map", "1:a", "-shortest",
+           "-movflags", "+faststart",
            str(final_mp4)]
     subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     list_file.unlink()

@@ -49,8 +49,8 @@ __pycache__/
 *.local
 
 # Demo video build artifacts (keep scripts/build/final/latentcode_demo.mp4 tracked)
+# .cast files ARE the source of truth and must be tracked
+# Keep: scripts/build/cast/  (the recordings)
+# Ignore: scripts/build/slides/, scripts/build/segments/ (regenerable intermediates)
 scripts/build/slides/
-scripts/build/recordings/
-scripts/build/audio/
 scripts/build/segments/
-scripts/build/html/
