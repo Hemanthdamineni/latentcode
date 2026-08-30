@@ -322,6 +322,7 @@ def cmd_verify(args: argparse.Namespace) -> int:
     print(f"→ Running {len(spec.actions)} action(s) from {spec_path}")
     result = run_verification(spec, base_url=args.base_url, stop_on_failure=not args.continue_on_failure)
     out_path = repo / ".latentcode" / "verification_results.json"
+    out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(result.to_dict(), indent=2, default=str), encoding="utf-8")
     print()
     for a in result.action_results:
