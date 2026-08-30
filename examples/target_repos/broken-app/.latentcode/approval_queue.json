@@ -1,0 +1,485 @@
+{
+  "pending": [
+    {
+      "id": "51994428",
+      "candidate": {
+        "category": "hidden_implementation",
+        "subtype": "dead_export",
+        "file": "lib/api.js",
+        "symbol": "fetchProduct",
+        "kind": "function",
+        "severity": 0.6,
+        "evidence": "exported `fetchProduct` has no importer in the project",
+        "repair_scope": {
+          "files": [
+            "lib/api.js"
+          ],
+          "depth": 3,
+          "rationale": "BFS from lib/api.js:3 through 3 hops reached 2 nodes / 1 files"
+        },
+        "id": "lib/api.js::0::dead_export",
+        "verdict": "real",
+        "classification": "stub",
+        "reasoning": "TODO comment indicates incomplete implementation.",
+        "suggested_fix_direction": "implement",
+        "risks": "Replaces a hard error with a silent no-op. Caller may now succeed with empty data.",
+        "test_suggestion": "Add a test that exercises this path with real inputs.",
+        "files_modified": [
+          "lib/api.js"
+        ]
+      },
+      "patch": "--- a/lib/api.js\n+++ b/lib/api.js\n@@ -3,1 +3,1 @@\n-throw new Error(\"not implemented\"); // TODO: implement\n+// [LatentCode] stub removed \u2014 please implement this handler\n",
+      "patch_source": "deterministic",
+      "status": "pending"
+    },
+    {
+      "id": "97fb757f",
+      "candidate": {
+        "category": "hidden_implementation",
+        "subtype": "dead_export",
+        "file": "lib/auth.js",
+        "symbol": "getCurrentUser",
+        "kind": "function",
+        "severity": 0.85,
+        "evidence": "exported `getCurrentUser` has no importer in the project",
+        "repair_scope": {
+          "files": [
+            "pages/api/checkout.js"
+          ],
+          "depth": 3,
+          "rationale": "BFS from pages/api/checkout.js:7 through 3 hops reached 1 nodes / 1 files"
+        },
+        "id": "lib/auth.js::0::dead_export",
+        "verdict": "real",
+        "classification": "stub",
+        "reasoning": "Code raises NotImplementedError or similar \u2014 clear placeholder.",
+        "suggested_fix_direction": "implement",
+        "risks": "Replaces a hard error with a silent no-op. Caller may now succeed with empty data.",
+        "test_suggestion": "Add a test that exercises this path with real inputs.",
+        "files_modified": [
+          "pages/api/checkout.js"
+        ]
+      },
+      "patch": "--- a/pages/api/checkout.js\n+++ b/pages/api/checkout.js\n@@ -7,1 +7,1 @@\n-throw new Error(\"not implemented\"); // TODO: implement\n+// [LatentCode] stub removed \u2014 please implement this handler\n",
+      "patch_source": "deterministic",
+      "status": "pending"
+    },
+    {
+      "id": "0c20f39b",
+      "candidate": {
+        "category": "hidden_implementation",
+        "subtype": "dead_export",
+        "file": "lib/auth.js",
+        "symbol": "requireAuth",
+        "kind": "function",
+        "severity": 0.85,
+        "evidence": "exported `requireAuth` has no importer in the project",
+        "repair_scope": {
+          "files": [
+            "pages/api/login.js"
+          ],
+          "depth": 3,
+          "rationale": "BFS from pages/api/login.js:11 through 3 hops reached 1 nodes / 1 files"
+        },
+        "id": "lib/auth.js::0::dead_export",
+        "verdict": "real",
+        "classification": "stub",
+        "reasoning": "Code raises NotImplementedError or similar \u2014 clear placeholder.",
+        "suggested_fix_direction": "implement",
+        "risks": "Replaces a hard error with a silent no-op. Caller may now succeed with empty data.",
+        "test_suggestion": "Add a test that exercises this path with real inputs.",
+        "files_modified": [
+          "pages/api/login.js"
+        ]
+      },
+      "patch": "--- a/pages/api/login.js\n+++ b/pages/api/login.js\n@@ -11,1 +11,1 @@\n-throw new Error(\"not implemented\"); // TODO: implement\n+// [LatentCode] stub removed \u2014 please implement this handler\n",
+      "patch_source": "deterministic",
+      "status": "pending"
+    },
+    {
+      "id": "4e117925",
+      "candidate": {
+        "category": "hidden_implementation",
+        "subtype": "dead_export",
+        "file": "lib/auth.js",
+        "symbol": "hashPassword",
+        "kind": "function",
+        "severity": 0.7,
+        "evidence": "exported `hashPassword` has no importer in the project",
+        "repair_scope": {
+          "files": [
+            "lib/auth.js"
+          ],
+          "depth": 3,
+          "rationale": "BFS from lib/auth.js:1 through 3 hops reached 3 nodes / 1 files"
+        },
+        "id": "lib/auth.js::0::dead_export",
+        "verdict": "real",
+        "classification": "disconnected",
+        "reasoning": "Exported symbol has no importer in the project. May be public API or genuinely dead.",
+        "suggested_fix_direction": "delete or wire",
+        "risks": "Symbol may be used via reflection, dynamic import, or as a public API. Verify before merging.",
+        "test_suggestion": "Run the build; if any module still imports this symbol, revert.",
+        "files_modified": [
+          "lib/auth.js"
+        ]
+      },
+      "patch": "--- a/lib/auth.js\n+++ b/lib/auth.js\n@@ -1,1 +1,1 @@\n-// TODO: confirm and remove unused export `hashPassword`\n+// [LatentCode] removed unused export `hashPassword`\n",
+      "patch_source": "deterministic",
+      "status": "pending"
+    },
+    {
+      "id": "43cfa326",
+      "candidate": {
+        "category": "hidden_implementation",
+        "subtype": "dead_export",
+        "file": "lib/stripe.js",
+        "symbol": "chargeCustomer",
+        "kind": "function",
+        "severity": 0.6,
+        "evidence": "exported `chargeCustomer` has no importer in the project",
+        "repair_scope": {
+          "files": [
+            "lib/auth.js"
+          ],
+          "depth": 3,
+          "rationale": "BFS from lib/auth.js:19 through 3 hops reached 3 nodes / 1 files"
+        },
+        "id": "lib/stripe.js::0::dead_export",
+        "verdict": "real",
+        "classification": "stub",
+        "reasoning": "TODO comment indicates incomplete implementation.",
+        "suggested_fix_direction": "implement",
+        "risks": "Replaces a hard error with a silent no-op. Caller may now succeed with empty data.",
+        "test_suggestion": "Add a test that exercises this path with real inputs.",
+        "files_modified": [
+          "lib/auth.js"
+        ]
+      },
+      "patch": "--- a/lib/auth.js\n+++ b/lib/auth.js\n@@ -19,1 +19,1 @@\n-throw new Error(\"not implemented\"); // TODO: implement\n+// [LatentCode] stub removed \u2014 please implement this handler\n",
+      "patch_source": "deterministic",
+      "status": "pending"
+    },
+    {
+      "id": "408ff02d",
+      "candidate": {
+        "category": "hidden_implementation",
+        "subtype": "dead_export",
+        "file": "components/Button.js",
+        "symbol": "Button",
+        "kind": "function",
+        "severity": 0.7,
+        "evidence": "exported `Button` has no importer in the project",
+        "repair_scope": {
+          "files": [
+            "lib/api.js"
+          ],
+          "depth": 3,
+          "rationale": "BFS from lib/api.js:1 through 3 hops reached 2 nodes / 1 files"
+        },
+        "id": "components/Button.js::0::dead_export",
+        "verdict": "real",
+        "classification": "disconnected",
+        "reasoning": "Exported symbol has no importer in the project. May be public API or genuinely dead.",
+        "suggested_fix_direction": "delete or wire",
+        "risks": "Symbol may be used via reflection, dynamic import, or as a public API. Verify before merging.",
+        "test_suggestion": "Run the build; if any module still imports this symbol, revert.",
+        "files_modified": [
+          "lib/api.js"
+        ]
+      },
+      "patch": "--- a/lib/api.js\n+++ b/lib/api.js\n@@ -1,1 +1,1 @@\n-// TODO: confirm and remove unused export `fetchProduct`\n+// [LatentCode] removed unused export `fetchProduct`\n",
+      "patch_source": "deterministic",
+      "status": "pending"
+    },
+    {
+      "id": "3ab8365e",
+      "candidate": {
+        "category": "hidden_implementation",
+        "subtype": "dead_export",
+        "file": "components/Button.js",
+        "symbol": "PrimaryButton",
+        "kind": "function",
+        "severity": 0.7,
+        "evidence": "exported `PrimaryButton` has no importer in the project",
+        "repair_scope": {
+          "files": [
+            "lib/auth.js"
+          ],
+          "depth": 3,
+          "rationale": "BFS from lib/auth.js:1 through 3 hops reached 3 nodes / 1 files"
+        },
+        "id": "components/Button.js::0::dead_export",
+        "verdict": "real",
+        "classification": "disconnected",
+        "reasoning": "Exported symbol has no importer in the project. May be public API or genuinely dead.",
+        "suggested_fix_direction": "delete or wire",
+        "risks": "Symbol may be used via reflection, dynamic import, or as a public API. Verify before merging.",
+        "test_suggestion": "Run the build; if any module still imports this symbol, revert.",
+        "files_modified": [
+          "lib/auth.js"
+        ]
+      },
+      "patch": "--- a/lib/auth.js\n+++ b/lib/auth.js\n@@ -1,1 +1,1 @@\n-// TODO: confirm and remove unused export `getCurrentUser`\n+// [LatentCode] removed unused export `getCurrentUser`\n",
+      "patch_source": "deterministic",
+      "status": "pending"
+    },
+    {
+      "id": "c233b1e2",
+      "candidate": {
+        "category": "agent_shortcut",
+        "subtype": "todo_comment",
+        "file": "lib/api.js",
+        "line": 3,
+        "severity": 0.6,
+        "evidence": "todo_comment at lib/api.js:3",
+        "snippet": "export async function fetchProducts() {\n  // TODO: replace this mock with the real backend call once the inventory\n  // service is deployed. For now return a hardcoded list.\n  return [",
+        "repair_scope": {
+          "files": [
+            "pages/api/checkout.js"
+          ],
+          "depth": 3,
+          "rationale": "BFS from pages/api/checkout.js:6 through 3 hops reached 1 nodes / 1 files"
+        },
+        "id": "lib/api.js::3::todo_comment",
+        "verdict": "real",
+        "classification": "stub",
+        "reasoning": "TODO comment indicates incomplete implementation.",
+        "suggested_fix_direction": "implement",
+        "risks": "Replaces a hard error with a silent no-op. Caller may now succeed with empty data.",
+        "test_suggestion": "Add a test that exercises this path with real inputs.",
+        "files_modified": [
+          "pages/api/checkout.js"
+        ]
+      },
+      "patch": "--- a/pages/api/checkout.js\n+++ b/pages/api/checkout.js\n@@ -6,1 +6,1 @@\n-throw new Error(\"not implemented\"); // TODO: implement\n+// [LatentCode] stub removed \u2014 please implement this handler\n",
+      "patch_source": "deterministic",
+      "status": "pending"
+    },
+    {
+      "id": "5eb7efde",
+      "candidate": {
+        "category": "agent_shortcut",
+        "subtype": "todo_comment",
+        "file": "lib/api.js",
+        "line": 12,
+        "severity": 0.6,
+        "evidence": "todo_comment at lib/api.js:12",
+        "snippet": "export async function fetchProduct(id) {\n  // TODO: implement single-product fetch\n  return { id, name: \"Placeholder\" };\n}",
+        "repair_scope": {
+          "files": [
+            "pages/api/login.js"
+          ],
+          "depth": 3,
+          "rationale": "BFS from pages/api/login.js:10 through 3 hops reached 1 nodes / 1 files"
+        },
+        "id": "lib/api.js::12::todo_comment",
+        "verdict": "real",
+        "classification": "stub",
+        "reasoning": "TODO comment indicates incomplete implementation.",
+        "suggested_fix_direction": "implement",
+        "risks": "Replaces a hard error with a silent no-op. Caller may now succeed with empty data.",
+        "test_suggestion": "Add a test that exercises this path with real inputs.",
+        "files_modified": [
+          "pages/api/login.js"
+        ]
+      },
+      "patch": "--- a/pages/api/login.js\n+++ b/pages/api/login.js\n@@ -10,1 +10,1 @@\n-throw new Error(\"not implemented\"); // TODO: implement\n+// [LatentCode] stub removed \u2014 please implement this handler\n",
+      "patch_source": "deterministic",
+      "status": "pending"
+    },
+    {
+      "id": "2285c880",
+      "candidate": {
+        "category": "agent_shortcut",
+        "subtype": "todo_comment",
+        "file": "lib/auth.js",
+        "line": 3,
+        "severity": 0.6,
+        "evidence": "todo_comment at lib/auth.js:3",
+        "snippet": "export function getCurrentUser(req) {\n  // TODO: extract user from session cookie\n  return null;\n}",
+        "repair_scope": {
+          "files": [
+            "lib/auth.js"
+          ],
+          "depth": 3,
+          "rationale": "BFS from lib/auth.js:3 through 3 hops reached 3 nodes / 1 files"
+        },
+        "id": "lib/auth.js::3::todo_comment",
+        "verdict": "real",
+        "classification": "stub",
+        "reasoning": "TODO comment indicates incomplete implementation.",
+        "suggested_fix_direction": "implement",
+        "risks": "Replaces a hard error with a silent no-op. Caller may now succeed with empty data.",
+        "test_suggestion": "Add a test that exercises this path with real inputs.",
+        "files_modified": [
+          "lib/auth.js"
+        ]
+      },
+      "patch": "--- a/lib/auth.js\n+++ b/lib/auth.js\n@@ -3,1 +3,1 @@\n-throw new Error(\"not implemented\"); // TODO: implement\n+// [LatentCode] stub removed \u2014 please implement this handler\n",
+      "patch_source": "deterministic",
+      "status": "pending"
+    },
+    {
+      "id": "f707e1af",
+      "candidate": {
+        "category": "agent_shortcut",
+        "subtype": "todo_comment",
+        "file": "lib/auth.js",
+        "line": 19,
+        "severity": 0.6,
+        "evidence": "todo_comment at lib/auth.js:19",
+        "snippet": "export function hashPassword(password) {\n  // TODO: use bcrypt\n  return password.split(\"\").reverse().join(\"\");\n}",
+        "repair_scope": {
+          "files": [
+            "lib/api.js"
+          ],
+          "depth": 3,
+          "rationale": "BFS from lib/api.js:12 through 3 hops reached 2 nodes / 1 files"
+        },
+        "id": "lib/auth.js::19::todo_comment",
+        "verdict": "real",
+        "classification": "stub",
+        "reasoning": "TODO comment indicates incomplete implementation.",
+        "suggested_fix_direction": "implement",
+        "risks": "Replaces a hard error with a silent no-op. Caller may now succeed with empty data.",
+        "test_suggestion": "Add a test that exercises this path with real inputs.",
+        "files_modified": [
+          "lib/api.js"
+        ]
+      },
+      "patch": "--- a/lib/api.js\n+++ b/lib/api.js\n@@ -12,1 +12,1 @@\n-throw new Error(\"not implemented\"); // TODO: implement\n+// [LatentCode] stub removed \u2014 please implement this handler\n",
+      "patch_source": "deterministic",
+      "status": "pending"
+    },
+    {
+      "id": "3cf94213",
+      "candidate": {
+        "category": "agent_shortcut",
+        "subtype": "todo_comment",
+        "file": "pages/api/login.js",
+        "line": 10,
+        "severity": 0.7,
+        "evidence": "todo_comment at pages/api/login.js:10",
+        "snippet": "  }\n  // TODO: validate against the user database and issue a session token\n  throw new Error(\"not implemented: login\");\n}",
+        "repair_scope": {
+          "files": [
+            "lib/auth.js"
+          ],
+          "depth": 3,
+          "rationale": "BFS from lib/auth.js:1 through 3 hops reached 3 nodes / 1 files"
+        },
+        "id": "pages/api/login.js::10::todo_comment",
+        "verdict": "real",
+        "classification": "disconnected",
+        "reasoning": "Exported symbol has no importer in the project. May be public API or genuinely dead.",
+        "suggested_fix_direction": "delete or wire",
+        "risks": "Symbol may be used via reflection, dynamic import, or as a public API. Verify before merging.",
+        "test_suggestion": "Run the build; if any module still imports this symbol, revert.",
+        "files_modified": [
+          "lib/auth.js"
+        ]
+      },
+      "patch": "--- a/lib/auth.js\n+++ b/lib/auth.js\n@@ -1,1 +1,1 @@\n-// TODO: confirm and remove unused export `requireAuth`\n+// [LatentCode] removed unused export `requireAuth`\n",
+      "patch_source": "deterministic",
+      "status": "pending"
+    },
+    {
+      "id": "01a06ffb",
+      "candidate": {
+        "category": "agent_shortcut",
+        "subtype": "not_implemented",
+        "file": "pages/api/login.js",
+        "line": 11,
+        "severity": 0.7,
+        "evidence": "not_implemented at pages/api/login.js:11",
+        "snippet": "  // TODO: validate against the user database and issue a session token\n  throw new Error(\"not implemented: login\");\n}",
+        "repair_scope": {
+          "files": [
+            "components/Button.js"
+          ],
+          "depth": 3,
+          "rationale": "BFS from components/Button.js:1 through 3 hops reached 2 nodes / 1 files"
+        },
+        "id": "pages/api/login.js::11::not_implemented",
+        "verdict": "real",
+        "classification": "disconnected",
+        "reasoning": "Exported symbol has no importer in the project. May be public API or genuinely dead.",
+        "suggested_fix_direction": "delete or wire",
+        "risks": "Symbol may be used via reflection, dynamic import, or as a public API. Verify before merging.",
+        "test_suggestion": "Run the build; if any module still imports this symbol, revert.",
+        "files_modified": [
+          "components/Button.js"
+        ]
+      },
+      "patch": "--- a/components/Button.js\n+++ b/components/Button.js\n@@ -1,1 +1,1 @@\n-// TODO: confirm and remove unused export `PrimaryButton`\n+// [LatentCode] removed unused export `PrimaryButton`\n",
+      "patch_source": "deterministic",
+      "status": "pending"
+    },
+    {
+      "id": "c154fce8",
+      "candidate": {
+        "category": "agent_shortcut",
+        "subtype": "todo_comment",
+        "file": "pages/api/checkout.js",
+        "line": 6,
+        "severity": 0.7,
+        "evidence": "todo_comment at pages/api/checkout.js:6",
+        "snippet": "  }\n  // TODO: integrate with Stripe and persist order\n  throw new NotImplementedError(\"checkout not implemented yet\");\n}",
+        "repair_scope": {
+          "files": [
+            "lib/stripe.js"
+          ],
+          "depth": 3,
+          "rationale": "BFS from lib/stripe.js:1 through 3 hops reached 1 nodes / 1 files"
+        },
+        "id": "pages/api/checkout.js::6::todo_comment",
+        "verdict": "real",
+        "classification": "disconnected",
+        "reasoning": "Exported symbol has no importer in the project. May be public API or genuinely dead.",
+        "suggested_fix_direction": "delete or wire",
+        "risks": "Symbol may be used via reflection, dynamic import, or as a public API. Verify before merging.",
+        "test_suggestion": "Run the build; if any module still imports this symbol, revert.",
+        "files_modified": [
+          "lib/stripe.js"
+        ]
+      },
+      "patch": "--- a/lib/stripe.js\n+++ b/lib/stripe.js\n@@ -1,1 +1,1 @@\n-// TODO: confirm and remove unused export `chargeCustomer`\n+// [LatentCode] removed unused export `chargeCustomer`\n",
+      "patch_source": "deterministic",
+      "status": "pending"
+    },
+    {
+      "id": "d900c746",
+      "candidate": {
+        "category": "agent_shortcut",
+        "subtype": "not_implemented",
+        "file": "pages/api/checkout.js",
+        "line": 7,
+        "severity": 0.7,
+        "evidence": "not_implemented at pages/api/checkout.js:7",
+        "snippet": "  // TODO: integrate with Stripe and persist order\n  throw new NotImplementedError(\"checkout not implemented yet\");\n}",
+        "repair_scope": {
+          "files": [
+            "components/Button.js"
+          ],
+          "depth": 3,
+          "rationale": "BFS from components/Button.js:1 through 3 hops reached 2 nodes / 1 files"
+        },
+        "id": "pages/api/checkout.js::7::not_implemented",
+        "verdict": "real",
+        "classification": "disconnected",
+        "reasoning": "Exported symbol has no importer in the project. May be public API or genuinely dead.",
+        "suggested_fix_direction": "delete or wire",
+        "risks": "Symbol may be used via reflection, dynamic import, or as a public API. Verify before merging.",
+        "test_suggestion": "Run the build; if any module still imports this symbol, revert.",
+        "files_modified": [
+          "components/Button.js"
+        ]
+      },
+      "patch": "--- a/components/Button.js\n+++ b/components/Button.js\n@@ -1,1 +1,1 @@\n-// TODO: confirm and remove unused export `Button`\n+// [LatentCode] removed unused export `Button`\n",
+      "patch_source": "deterministic",
+      "status": "pending"
+    }
+  ],
+  "applied": []
+}

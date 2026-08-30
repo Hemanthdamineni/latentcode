@@ -1,0 +1,118 @@
+# LatentCode Issue Taxonomy
+# Machine-readable spec consumed by the analyzer + dashboard.
+# Each category lists the detection sources and what "fixed" means.
+
+categories:
+
+  hidden_implementation:
+    label: "Hidden / disconnected implementation"
+    description: >
+      Code that exists but is unreachable from any entry point.
+      Includes functions with no callers, modules never imported,
+      components never rendered, branches that never execute.
+    detectors:
+      - dead_export_scan        # ts-prune, depcruise orphans
+      - import_graph_reach      # reachability from main entrypoints
+      - branch_coverage_diff    # tests vs untested branches
+    severity_weights:
+      exported_function: 0.7
+      exported_component: 0.9
+      private_helper: 0.3
+    fix_signals:
+      - delete_unused_export
+      - wire_to_caller
+      - add_entry_point
+
+  broken_integration:
+    label: "Broken integration"
+    description: >
+      Mismatched contracts, missing env vars, unconfigured
+      middleware, broken third-party wiring.
+    detectors:
+      - env_var_referenced_but_missing
+      - api_schema_drift
+      - middleware_unregistered
+      - unhandled_grpc_code
+    fix_signals:
+      - add_missing_env_to_schema
+      - regenerate_client_from_schema
+      - register_middleware
+
+  broken_e2e_feature:
+    label: "Broken end-to-end feature"
+    description: >
+      The pieces of a feature exist but they don't connect:
+      UI posts to a route whose handler is a stub; a button calls
+      an unmounted handler; a feature flag hides the wiring.
+    detectors:
+      - route_graph + handler_real_impl_check
+      - ui_event_to_handler_trace
+      - llm_judge: "is this feature real?"
+    fix_signals:
+      - wire_handler_to_real_impl
+      - remove_dead_feature
+
+  agent_shortcut:
+    label: "Agent shortcut / stub masquerading as implementation"
+    description: >
+      Code that looks finished but is actually a placeholder:
+      TODO comments in shipping paths, hardcoded return values,
+      `pass`/`throw NotImplementedError` in handlers, faked data.
+    detectors:
+      - todo_in_shipping_path
+      - not_implemented_in_handler
+      - hardcoded_mock_in_prod
+      - llm_judge: "is this a real impl or stub?"
+    fix_signals:
+      - replace_stub_with_real_logic
+      - extract_to_separate_module
+      - mark_as_explicit_stub
+
+  performance:
+    label: "Performance issue"
+    description: >
+      N+1 queries, blocking sync I/O in async handlers,
+      missing memoization, oversized bundles, missing indices.
+    detectors:
+      - loop_with_query_pattern
+      - sync_io_in_async_handler
+      - unbounded_list_render
+      - bundle_size_anomaly
+      - runtime_timing_probe
+    fix_signals:
+      - batch_query
+      - parallelize_io
+      - add_cache_layer
+      - split_bundle
+
+  security:
+    label: "Security risk"
+    description: >
+      Hardcoded secrets, missing input validation, broken auth,
+      outdated deps with known CVEs, open CORS, missing rate limit.
+    detectors:
+      - secret_pattern_scan
+      - missing_input_validation
+      - auth_check_on_route
+      - npm_audit / pip_audit
+      - cors_open_check
+      - rate_limit_check
+    fix_signals:
+      - move_secret_to_env
+      - add_validator
+      - require_auth_middleware
+      - bump_dep
+
+  build_dep:
+    label: "Build / dependency issue"
+    description: >
+      Missing build scripts, broken lockfile, dead dependencies,
+      incompatible peer versions, missing CI step.
+    detectors:
+      - referenced_script_missing
+      - unused_dependency
+      - peer_version_conflict
+    fix_signals:
+      - add_script
+      - remove_unused_dep
+      - align_peer_version

@@ -1,0 +1,35 @@
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+*.log
+node_modules/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# LatentCode runtime
+.sdlc/checkpoints/*
+.sdlc/logs/*
+.sdlc/traces/*
+.sdlc/workspace.db
+.sdlc/workspace.db-journal
+.sdlc/.version
+.sdlc/index/*
+.sdlc/memory/*
+!sdlc/index/.gitkeep
+!sdlc/logs/.gitkeep
+!sdlc/traces/.gitkeep
+!sdlc/checkpoints/.gitkeep
+!sdlc/memory/.gitkeep
+
+# Local secrets / config
+.env
+.env.local
+*.local

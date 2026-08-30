@@ -1,0 +1,62 @@
+{
+  "_comment": "Golden labels for LatentCode's eval harness. Used by `latentcode eval` to compute precision/recall against ground truth. Edit only if you intend to change the ground truth.",
+
+  "static_class": {
+    "expected_issues": [
+      {"file": "pages/api/todos.js", "line": 7, "subtype": "not_implemented", "category": "agent_shortcut", "must_be_flagged": true},
+      {"file": "lib/todoApi.js", "line": 0, "subtype": "dead_export", "category": "hidden_implementation", "must_be_flagged": true},
+      {"file": "lib/todoApi.js", "line": 0, "subtype": "dead_export", "category": "hidden_implementation", "must_be_flagged": true}
+    ],
+    "must_not_flag": [
+      {"file": "pages/index.js", "line": 0, "reason": "the page is a real entry point"}
+    ]
+  },
+
+  "integration_class": {
+    "expected_issues": [
+      {
+        "id": "ui-to-api-disconnected",
+        "category": "broken_e2e_feature",
+        "description": "pages/index.js button onCreate never calls lib/todoApi.createTodo",
+        "evidence_files": ["pages/index.js", "lib/todoApi.js"],
+        "must_be_flagged": true
+      },
+      {
+        "id": "client-never-imported",
+        "category": "broken_e2e_feature",
+        "description": "lib/todoApi.js is exported but no source file imports it",
+        "evidence_files": ["lib/todoApi.js"],
+        "must_be_flagged": true
+      },
+      {
+        "id": "route-handler-stub",
+        "category": "broken_e2e_feature",
+        "description": "POST /api/todos throws not implemented",
+        "evidence_files": ["pages/api/todos.js"],
+        "must_be_flagged": true
+      }
+    ]
+  },
+
+  "behavioral_class": {
+    "verification_spec": "examples/target_repos/e2e-broken/.latentcode/verification_spec.yaml",
+    "expected_actions": [
+      {
+        "name": "List todos (should be empty)",
+        "expected_pass": true,
+        "rationale": "GET /api/todos returns [] (works)"
+      },
+      {
+        "name": "Create a todo (POST, fails because handler is a stub)",
+        "expected_pass": false,
+        "rationale": "POST /api/todos throws not implemented; LatentCode must surface this as a latent issue"
+      },
+      {
+        "name": "Verify the todo was created (GET, fails because no list contains it)",
+        "expected_pass": false,
+        "rationale": "Even after the POST is fixed, this would pass — but today the POST is broken so the chain fails"
+      }
+    ],
+    "expected_min_issues_flagged": 2
+  }
+}

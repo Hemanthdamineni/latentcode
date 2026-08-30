@@ -1,0 +1,35 @@
+name: sdlc-phases
+description: Default SDLC phase graph
+
+nodes:
+  - id: Chatting
+    type: start
+  - id: Specs
+    type: phase
+  - id: Planning
+    type: phase
+  - id: Coding
+    type: action
+  - id: Review
+    type: review
+  - id: Testing
+    type: phase
+  - id: Done
+    type: end
+
+edges:
+  - from: Chatting
+    to: Specs
+  - from: Specs
+    to: Planning
+  - from: Planning
+    to: Coding
+  - from: Coding
+    to: Review
+  - from: Review
+    to: Testing
+  - from: Testing
+    to: Done
+  - from: Review
+    to: Coding
+    label: iteration

@@ -1,0 +1,26 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "agent": {
+    "foundry": {
+      "description": "Foundry workspace-aware SDLC orchestration agent with deterministic bootstrap, validation, tracing, and recovery.",
+      "mode": "primary",
+      "permission": {
+        "bash": "ask",
+        "edit": "allow",
+        "task": "allow"
+      },
+      "prompt": "{file:.opencode/skills/foundry/SKILL.md}"
+    }
+  },
+  "instructions": [],
+  "mcp": {
+    "foundry-orchestrator": {
+      "command": [
+        "sdlc-mcp"
+      ],
+      "enabled": true,
+      "environment": {},
+      "type": "local"
+    }
+  }
+}

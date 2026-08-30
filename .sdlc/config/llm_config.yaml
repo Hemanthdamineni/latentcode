@@ -1,0 +1,38 @@
+# Foundry runtime LLM configuration
+#
+# Default behavior:
+#   enabled: false
+#
+# With runtime LLMs disabled, Foundry does not call Ollama, OpenAI, or any other
+# Python-side model provider. OpenCode's currently selected model performs the
+# phase work, while the runtime enforces deterministic validation, persistence,
+# tracing, and recovery.
+#
+# To enable Python-side judge/debate calls, set enabled: true and configure a
+# provider below. Environment variables can override YAML values, for example:
+#   SDLC_LLM__ENABLED=true
+#   SDLC_LLM__DEFAULT_PROVIDER=openai
+#   SDLC_LLM__PROVIDERS__OPENAI__API_KEY=sk-...
+#   SDLC_LLM__PROVIDERS__OPENAI__BASE_URL=https://api.openai.com/v1
+
+llm:
+  enabled: false
+  default_provider: opencode
+  default_model: opencode/current
+
+  providers: {}
+
+  # Example override:
+  # providers:
+  #   openai:
+  #     type: openai
+  #     base_url: https://api.openai.com/v1
+  #     api_key: ""
+  #     default_model: gpt-4o
+  #
+  # routing:
+  #   judge:
+  #     provider: openai
+  #     model: gpt-4o
+
+  routing: {}

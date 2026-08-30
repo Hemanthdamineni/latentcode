@@ -1,0 +1,503 @@
+{
+  "project": {
+    "repo_root": "/home/zorro-omarchy/Desktop/Projects/Personal/00_Active/LatentCode/examples/target_repos/broken-app",
+    "language": "javascript",
+    "framework": "nextjs",
+    "package_manager": "npm",
+    "entry_points": [
+      "pages/index.js"
+    ],
+    "build_cmd": "next build",
+    "dev_cmd": "next dev -p 3000",
+    "test_cmd": null,
+    "declared_features": [
+      "Features",
+      "Product listing",
+      "User authentication",
+      "Checkout with Stripe",
+      "Order history",
+      "Admin dashboard",
+      "Email notifications",
+      "Search functionality",
+      "Reviews and ratings"
+    ],
+    "declared_integrations": [
+      "axios"
+    ],
+    "env_vars_referenced": [
+      "STRIPE_SECRET_KEY"
+    ],
+    "routes": []
+  },
+  "static": {
+    "stats": {
+      "files_analyzed": 8,
+      "symbols": 13,
+      "imports": 3,
+      "calls": 0,
+      "routes": 0,
+      "stubs": 8
+    },
+    "graph": {
+      "node_count": 13,
+      "edge_count": 0,
+      "nodes": [
+        {
+          "id": "symbol:lib/api.js::fetchProducts",
+          "type": "symbol",
+          "kind": "function",
+          "name": "fetchProducts",
+          "file": "lib/api.js",
+          "exported": true,
+          "line": null
+        },
+        {
+          "id": "symbol:lib/api.js::fetchProduct",
+          "type": "symbol",
+          "kind": "function",
+          "name": "fetchProduct",
+          "file": "lib/api.js",
+          "exported": true,
+          "line": null
+        },
+        {
+          "id": "symbol:lib/auth.js::getCurrentUser",
+          "type": "symbol",
+          "kind": "function",
+          "name": "getCurrentUser",
+          "file": "lib/auth.js",
+          "exported": true,
+          "line": null
+        },
+        {
+          "id": "symbol:lib/auth.js::requireAuth",
+          "type": "symbol",
+          "kind": "function",
+          "name": "requireAuth",
+          "file": "lib/auth.js",
+          "exported": true,
+          "line": null
+        },
+        {
+          "id": "symbol:lib/auth.js::hashPassword",
+          "type": "symbol",
+          "kind": "function",
+          "name": "hashPassword",
+          "file": "lib/auth.js",
+          "exported": true,
+          "line": null
+        },
+        {
+          "id": "symbol:lib/stripe.js::chargeCustomer",
+          "type": "symbol",
+          "kind": "function",
+          "name": "chargeCustomer",
+          "file": "lib/stripe.js",
+          "exported": true,
+          "line": null
+        },
+        {
+          "id": "symbol:pages/index.js::Home",
+          "type": "symbol",
+          "kind": "function",
+          "name": "Home",
+          "file": "pages/index.js",
+          "exported": true,
+          "line": null
+        },
+        {
+          "id": "symbol:pages/index.js::getServerSideProps",
+          "type": "symbol",
+          "kind": "function",
+          "name": "getServerSideProps",
+          "file": "pages/index.js",
+          "exported": true,
+          "line": null
+        },
+        {
+          "id": "symbol:components/Button.js::Button",
+          "type": "symbol",
+          "kind": "function",
+          "name": "Button",
+          "file": "components/Button.js",
+          "exported": true,
+          "line": null
+        },
+        {
+          "id": "symbol:components/Button.js::PrimaryButton",
+          "type": "symbol",
+          "kind": "function",
+          "name": "PrimaryButton",
+          "file": "components/Button.js",
+          "exported": true,
+          "line": null
+        },
+        {
+          "id": "symbol:pages/api/products.js::handler",
+          "type": "symbol",
+          "kind": "function",
+          "name": "handler",
+          "file": "pages/api/products.js",
+          "exported": true,
+          "line": null
+        },
+        {
+          "id": "symbol:pages/api/login.js::handler",
+          "type": "symbol",
+          "kind": "function",
+          "name": "handler",
+          "file": "pages/api/login.js",
+          "exported": true,
+          "line": null
+        },
+        {
+          "id": "symbol:pages/api/checkout.js::handler",
+          "type": "symbol",
+          "kind": "function",
+          "name": "handler",
+          "file": "pages/api/checkout.js",
+          "exported": true,
+          "line": null
+        }
+      ],
+      "edges": []
+    },
+    "routes": []
+  },
+  "runtime": {
+    "endpoints": [],
+    "metrics": {},
+    "routes_working": 0,
+    "routes_failing": 0
+  },
+  "issues": [
+    {
+      "category": "hidden_implementation",
+      "subtype": "dead_export",
+      "file": "lib/api.js",
+      "symbol": "fetchProduct",
+      "kind": "function",
+      "severity": 0.7,
+      "evidence": "exported `fetchProduct` has no importer in the project",
+      "repair_scope": {
+        "files": [
+          "lib/api.js"
+        ],
+        "depth": 3,
+        "rationale": "BFS from lib/api.js:1 through 3 hops reached 2 nodes / 1 files"
+      }
+    },
+    {
+      "category": "hidden_implementation",
+      "subtype": "dead_export",
+      "file": "lib/auth.js",
+      "symbol": "getCurrentUser",
+      "kind": "function",
+      "severity": 0.7,
+      "evidence": "exported `getCurrentUser` has no importer in the project",
+      "repair_scope": {
+        "files": [
+          "lib/auth.js"
+        ],
+        "depth": 3,
+        "rationale": "BFS from lib/auth.js:1 through 3 hops reached 3 nodes / 1 files"
+      }
+    },
+    {
+      "category": "hidden_implementation",
+      "subtype": "dead_export",
+      "file": "lib/auth.js",
+      "symbol": "requireAuth",
+      "kind": "function",
+      "severity": 0.7,
+      "evidence": "exported `requireAuth` has no importer in the project",
+      "repair_scope": {
+        "files": [
+          "lib/auth.js"
+        ],
+        "depth": 3,
+        "rationale": "BFS from lib/auth.js:1 through 3 hops reached 3 nodes / 1 files"
+      }
+    },
+    {
+      "category": "hidden_implementation",
+      "subtype": "dead_export",
+      "file": "lib/auth.js",
+      "symbol": "hashPassword",
+      "kind": "function",
+      "severity": 0.7,
+      "evidence": "exported `hashPassword` has no importer in the project",
+      "repair_scope": {
+        "files": [
+          "lib/auth.js"
+        ],
+        "depth": 3,
+        "rationale": "BFS from lib/auth.js:1 through 3 hops reached 3 nodes / 1 files"
+      }
+    },
+    {
+      "category": "hidden_implementation",
+      "subtype": "dead_export",
+      "file": "lib/stripe.js",
+      "symbol": "chargeCustomer",
+      "kind": "function",
+      "severity": 0.7,
+      "evidence": "exported `chargeCustomer` has no importer in the project",
+      "repair_scope": {
+        "files": [
+          "lib/stripe.js"
+        ],
+        "depth": 3,
+        "rationale": "BFS from lib/stripe.js:1 through 3 hops reached 1 nodes / 1 files"
+      }
+    },
+    {
+      "category": "hidden_implementation",
+      "subtype": "dead_export",
+      "file": "components/Button.js",
+      "symbol": "Button",
+      "kind": "function",
+      "severity": 0.7,
+      "evidence": "exported `Button` has no importer in the project",
+      "repair_scope": {
+        "files": [
+          "components/Button.js"
+        ],
+        "depth": 3,
+        "rationale": "BFS from components/Button.js:1 through 3 hops reached 2 nodes / 1 files"
+      }
+    },
+    {
+      "category": "hidden_implementation",
+      "subtype": "dead_export",
+      "file": "components/Button.js",
+      "symbol": "PrimaryButton",
+      "kind": "function",
+      "severity": 0.7,
+      "evidence": "exported `PrimaryButton` has no importer in the project",
+      "repair_scope": {
+        "files": [
+          "components/Button.js"
+        ],
+        "depth": 3,
+        "rationale": "BFS from components/Button.js:1 through 3 hops reached 2 nodes / 1 files"
+      }
+    },
+    {
+      "category": "agent_shortcut",
+      "subtype": "todo_comment",
+      "file": "lib/api.js",
+      "line": 3,
+      "severity": 0.5,
+      "evidence": "todo_comment at lib/api.js:3",
+      "snippet": "export async function fetchProducts() {\n  // TODO: replace this mock with the real backend call once the inventory\n  // service is deployed. For now return a hardcoded list.\n  return [",
+      "repair_scope": {
+        "files": [
+          "lib/api.js"
+        ],
+        "depth": 3,
+        "rationale": "BFS from lib/api.js:3 through 3 hops reached 2 nodes / 1 files"
+      }
+    },
+    {
+      "category": "agent_shortcut",
+      "subtype": "todo_comment",
+      "file": "lib/api.js",
+      "line": 12,
+      "severity": 0.5,
+      "evidence": "todo_comment at lib/api.js:12",
+      "snippet": "export async function fetchProduct(id) {\n  // TODO: implement single-product fetch\n  return { id, name: \"Placeholder\" };\n}",
+      "repair_scope": {
+        "files": [
+          "lib/api.js"
+        ],
+        "depth": 3,
+        "rationale": "BFS from lib/api.js:12 through 3 hops reached 2 nodes / 1 files"
+      }
+    },
+    {
+      "category": "agent_shortcut",
+      "subtype": "todo_comment",
+      "file": "lib/auth.js",
+      "line": 3,
+      "severity": 0.5,
+      "evidence": "todo_comment at lib/auth.js:3",
+      "snippet": "export function getCurrentUser(req) {\n  // TODO: extract user from session cookie\n  return null;\n}",
+      "repair_scope": {
+        "files": [
+          "lib/auth.js"
+        ],
+        "depth": 3,
+        "rationale": "BFS from lib/auth.js:3 through 3 hops reached 3 nodes / 1 files"
+      }
+    },
+    {
+      "category": "agent_shortcut",
+      "subtype": "todo_comment",
+      "file": "lib/auth.js",
+      "line": 19,
+      "severity": 0.5,
+      "evidence": "todo_comment at lib/auth.js:19",
+      "snippet": "export function hashPassword(password) {\n  // TODO: use bcrypt\n  return password.split(\"\").reverse().join(\"\");\n}",
+      "repair_scope": {
+        "files": [
+          "lib/auth.js"
+        ],
+        "depth": 3,
+        "rationale": "BFS from lib/auth.js:19 through 3 hops reached 3 nodes / 1 files"
+      }
+    },
+    {
+      "category": "agent_shortcut",
+      "subtype": "todo_comment",
+      "file": "pages/api/login.js",
+      "line": 10,
+      "severity": 0.5,
+      "evidence": "todo_comment at pages/api/login.js:10",
+      "snippet": "  }\n  // TODO: validate against the user database and issue a session token\n  throw new Error(\"not implemented: login\");\n}",
+      "repair_scope": {
+        "files": [
+          "pages/api/login.js"
+        ],
+        "depth": 3,
+        "rationale": "BFS from pages/api/login.js:10 through 3 hops reached 1 nodes / 1 files"
+      }
+    },
+    {
+      "category": "agent_shortcut",
+      "subtype": "not_implemented",
+      "file": "pages/api/login.js",
+      "line": 11,
+      "severity": 0.8,
+      "evidence": "not_implemented at pages/api/login.js:11",
+      "snippet": "  // TODO: validate against the user database and issue a session token\n  throw new Error(\"not implemented: login\");\n}",
+      "repair_scope": {
+        "files": [
+          "pages/api/login.js"
+        ],
+        "depth": 3,
+        "rationale": "BFS from pages/api/login.js:11 through 3 hops reached 1 nodes / 1 files"
+      }
+    },
+    {
+      "category": "agent_shortcut",
+      "subtype": "todo_comment",
+      "file": "pages/api/checkout.js",
+      "line": 6,
+      "severity": 0.5,
+      "evidence": "todo_comment at pages/api/checkout.js:6",
+      "snippet": "  }\n  // TODO: integrate with Stripe and persist order\n  throw new NotImplementedError(\"checkout not implemented yet\");\n}",
+      "repair_scope": {
+        "files": [
+          "pages/api/checkout.js"
+        ],
+        "depth": 3,
+        "rationale": "BFS from pages/api/checkout.js:6 through 3 hops reached 1 nodes / 1 files"
+      }
+    },
+    {
+      "category": "agent_shortcut",
+      "subtype": "not_implemented",
+      "file": "pages/api/checkout.js",
+      "line": 7,
+      "severity": 0.8,
+      "evidence": "not_implemented at pages/api/checkout.js:7",
+      "snippet": "  // TODO: integrate with Stripe and persist order\n  throw new NotImplementedError(\"checkout not implemented yet\");\n}",
+      "repair_scope": {
+        "files": [
+          "pages/api/checkout.js"
+        ],
+        "depth": 3,
+        "rationale": "BFS from pages/api/checkout.js:7 through 3 hops reached 1 nodes / 1 files"
+      }
+    },
+    {
+      "category": "broken_integration",
+      "subtype": "env_var_missing",
+      "var": "STRIPE_SECRET_KEY",
+      "files": [
+        "lib/stripe.js"
+      ],
+      "severity": 0.6,
+      "evidence": "`STRIPE_SECRET_KEY` referenced in 1 file(s) but not in any .env / .env.example",
+      "repair_scope": {
+        "files": [
+          "lib/stripe.js"
+        ],
+        "depth": 0,
+        "rationale": "env var referenced in 1 files; scope is the referencing files"
+      }
+    }
+  ],
+  "summary": {
+    "total_issues": 16,
+    "by_category": {
+      "hidden_implementation": 7,
+      "agent_shortcut": 8,
+      "broken_integration": 1
+    },
+    "top_severity": [
+      {
+        "file": "pages/api/login.js",
+        "category": "agent_shortcut",
+        "severity": 0.8,
+        "evidence": "not_implemented at pages/api/login.js:11"
+      },
+      {
+        "file": "pages/api/checkout.js",
+        "category": "agent_shortcut",
+        "severity": 0.8,
+        "evidence": "not_implemented at pages/api/checkout.js:7"
+      },
+      {
+        "file": "lib/api.js",
+        "category": "hidden_implementation",
+        "severity": 0.7,
+        "evidence": "exported `fetchProduct` has no importer in the project"
+      },
+      {
+        "file": "lib/auth.js",
+        "category": "hidden_implementation",
+        "severity": 0.7,
+        "evidence": "exported `getCurrentUser` has no importer in the project"
+      },
+      {
+        "file": "lib/auth.js",
+        "category": "hidden_implementation",
+        "severity": 0.7,
+        "evidence": "exported `requireAuth` has no importer in the project"
+      },
+      {
+        "file": "lib/auth.js",
+        "category": "hidden_implementation",
+        "severity": 0.7,
+        "evidence": "exported `hashPassword` has no importer in the project"
+      },
+      {
+        "file": "lib/stripe.js",
+        "category": "hidden_implementation",
+        "severity": 0.7,
+        "evidence": "exported `chargeCustomer` has no importer in the project"
+      },
+      {
+        "file": "components/Button.js",
+        "category": "hidden_implementation",
+        "severity": 0.7,
+        "evidence": "exported `Button` has no importer in the project"
+      },
+      {
+        "file": "components/Button.js",
+        "category": "hidden_implementation",
+        "severity": 0.7,
+        "evidence": "exported `PrimaryButton` has no importer in the project"
+      },
+      {
+        "file": null,
+        "category": "broken_integration",
+        "severity": 0.6,
+        "evidence": "`STRIPE_SECRET_KEY` referenced in 1 file(s) but not in any .env / .env.example"
+      }
+    ]
+  },
+  "generated_at": "2026-08-30T11:47:03.132527+00:00"
+}

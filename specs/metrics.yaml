@@ -1,0 +1,60 @@
+# LatentCode Metric Definitions
+# Each metric has a measured value, units, and a comparator (before/after).
+
+metrics:
+
+  build_time_seconds:
+    label: "Build time"
+    command: "auto"          # detected from project type
+    lower_is_better: true
+    unit: "s"
+    collector: "shell_timed_command"
+
+  cold_start_seconds:
+    label: "Server cold start"
+    command: "auto"
+    lower_is_better: true
+    unit: "s"
+    collector: "spawn_then_curl"
+
+  e2e_feature_pass_rate:
+    label: "Feature pass rate"
+    description: "% of declared features that work end-to-end"
+    unit: "%"
+    higher_is_better: true
+    range: [0, 100]
+    inputs:
+      - runtime_probe_results
+      - declared_features_in_readme
+    formula: "passed_features / declared_features * 100"
+
+  integration_health_score:
+    label: "Integration health"
+    description: "% of declared integrations that respond successfully"
+    unit: "%"
+    higher_is_better: true
+    range: [0, 100]
+    inputs:
+      - runtime_probe_results
+
+  dead_export_ratio:
+    label: "Dead export ratio"
+    unit: "%"
+    lower_is_better: true
+    formula: "unused_exports / total_exports * 100"
+
+  latent_issue_count:
+    label: "Latent issues found"
+    unit: "count"
+    lower_is_better: true
+    breakdown_by_category: true
+
+  repair_success_rate:
+    label: "Repair success rate"
+    description: "% of approved repairs that actually improved the project"
+    unit: "%"
+    higher_is_better: true
+    range: [0, 100]
+    inputs:
+      - approved_repairs
+      - regression_check_pass
