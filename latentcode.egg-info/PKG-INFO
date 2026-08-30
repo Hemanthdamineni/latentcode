@@ -1,6 +1,0 @@
-Metadata-Version: 2.4
-Name: latentcode
-Version: 0.1.0
-Summary: AI-powered analysis that finds and repairs latent defects in software projects
-Requires-Python: >=3.11
-Requires-Dist: pyyaml>=6.0

@@ -1,3 +1,0 @@
-[console_scripts]
-latentcode = latentcode.cli:main
-latentcode-mcp = latentcode.mcp_server:serve_stdio

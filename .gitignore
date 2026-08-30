@@ -29,6 +29,20 @@ __pycache__/
 !sdlc/checkpoints/.gitkeep
 !sdlc/memory/.gitkeep
 
+# Per-repo scan output (example targets + any user repo)
+**/.latentcode/
+
+# OpenCode IDE cache
+.opencode/
+
+# Test caches
+.pytest_cache/
+
+# Python build artifacts
+*.egg-info/
+build/
+dist/
+
 # Local secrets / config
 .env
 .env.local
