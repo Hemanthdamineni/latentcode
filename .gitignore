@@ -47,3 +47,9 @@ dist/
 .env
 .env.local
 *.local
+# Demo video build artifacts (keep scripts/build/final/latentcode_demo.mp4 tracked)
+scripts/build/slides/
+scripts/build/recordings/
+scripts/build/audio/
+scripts/build/segments/
+scripts/build/html/
