@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import CategoryPill from "./CategoryPill";
 import { approvePatch, rejectPatch, applyPatch } from "@/lib/findings";
