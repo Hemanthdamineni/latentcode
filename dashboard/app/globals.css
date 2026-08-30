@@ -2,36 +2,88 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  color-scheme: dark;
+@layer base {
+  :root {
+    /* LatentCode palette — refined amber on near-black, with cool neutrals
+       tinted toward the amber hue for subconscious cohesion. */
+    --lc-bg: oklch(0.16 0.013 60);            /* near-black, warm */
+    --lc-surface: oklch(0.20 0.015 60);       /* panel */
+    --lc-surface-2: oklch(0.24 0.016 60);     /* nested surface */
+    --lc-border: oklch(0.32 0.018 60);        /* hairline */
+    --lc-border-strong: oklch(0.42 0.022 60);
+    --lc-text: oklch(0.96 0.008 80);          /* near-white, warm */
+    --lc-text-dim: oklch(0.74 0.012 70);
+    --lc-text-mute: oklch(0.54 0.014 65);
+    --lc-accent: oklch(0.74 0.16 65);         /* amber — "latent ember" */
+    --lc-accent-soft: oklch(0.66 0.13 65);
+    --lc-accent-glow: oklch(0.74 0.16 65 / 0.18);
+    --lc-warn: oklch(0.78 0.15 85);           /* yellow */
+    --lc-danger: oklch(0.68 0.18 28);         /* warm red */
+    --lc-ok: oklch(0.74 0.16 150);            /* mint */
+    --lc-mono: ui-monospace, "JetBrains Mono", "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+    --lc-sans: "Geist", "Inter Tight", "Helvetica Neue", system-ui, sans-serif;
+  }
+
+  * { border-color: var(--lc-border); }
+  html, body {
+    background: var(--lc-bg);
+    color: var(--lc-text);
+    font-family: var(--lc-sans);
+    font-feature-settings: "ss01", "cv11";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  ::selection { background: var(--lc-accent); color: var(--lc-bg); }
 }
 
-html, body {
-  background: #0b0d12;
-  color: #e5e7eb;
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-               "Segoe UI", Roboto, "Helvetica Neue", Arial;
-}
+@layer components {
+  .lc-page {
+    @apply flex flex-col gap-6;
+  }
 
-.lc-card {
-  background: #13161d;
-  border: 1px solid #1f2330;
-  border-radius: 8px;
-  padding: 16px;
-}
+  .lc-h1 {
+    @apply text-[26px] font-semibold tracking-[-0.01em] text-[color:var(--lc-text)];
+  }
 
-.lc-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 2px 8px;
-  border-radius: 9999px;
-  font-size: 11px;
-  font-weight: 500;
-}
+  .lc-h2 {
+    @apply text-[15px] font-medium uppercase tracking-[0.08em] text-[color:var(--lc-text-mute)];
+  }
 
-.lc-pill-danger { background: rgba(239, 68, 68, 0.15); color: #fca5a5; }
-.lc-pill-warn   { background: rgba(245, 158, 11, 0.15); color: #fcd34d; }
-.lc-pill-ok     { background: rgba(16, 185, 129, 0.15); color: #6ee7b7; }
-.lc-pill-muted  { background: rgba(107, 114, 128, 0.15); color: #d1d5db; }
-.lc-pill-accent { background: rgba(124, 92, 255, 0.15); color: #c4b5fd; }
+  .lc-sub {
+    @apply text-[13px] text-[color:var(--lc-text-dim)] mt-1;
+  }
+
+  .lc-card {
+    background: var(--lc-surface);
+    border: 1px solid var(--lc-border);
+    border-radius: 6px;
+  }
+
+  .lc-pill {
+    @apply inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-medium tracking-wide uppercase;
+  }
+
+  .lc-pill-amber { background: oklch(0.74 0.16 65 / 0.14); color: oklch(0.85 0.13 70); }
+  .lc-pill-warn  { background: oklch(0.78 0.15 85 / 0.14); color: oklch(0.86 0.12 90); }
+  .lc-pill-red   { background: oklch(0.68 0.18 28 / 0.14); color: oklch(0.80 0.14 30); }
+  .lc-pill-mint  { background: oklch(0.74 0.16 150 / 0.14); color: oklch(0.84 0.13 150); }
+  .lc-pill-mute  { background: oklch(0.32 0.018 60 / 0.6); color: var(--lc-text-dim); }
+
+  /* "Latent-ness" indicator: a tiny bar showing how dormant/active an
+     issue is. This is the visual signature of the dashboard. */
+  .lc-dormant {
+    width: 28px; height: 3px; border-radius: 2px;
+    background: linear-gradient(90deg, var(--lc-accent) 0%, transparent 100%);
+  }
+  .lc-dormant.fresh { background: var(--lc-accent); }
+  .lc-dormant.stale { background: var(--lc-text-mute); opacity: 0.4; }
+
+  .lc-row {
+    @apply flex items-center gap-3 px-3 py-2.5 transition-colors;
+    border-bottom: 1px solid var(--lc-border);
+  }
+  .lc-row:last-child { border-bottom: 0; }
+  .lc-row:hover { background: var(--lc-surface-2); }
+
+  .lc-mono { font-family: var(--lc-mono); }
+}
