@@ -38,15 +38,16 @@ __pycache__/
 # Test caches
 .pytest_cache/
 
-# Python build artifacts
+# Python build artifacts (these match the top-level dirs only, not scripts/build/)
 *.egg-info/
-build/
-dist/
+/build/
+/dist/
 
 # Local secrets / config
 .env
 .env.local
 *.local
+
 # Demo video build artifacts (keep scripts/build/final/latentcode_demo.mp4 tracked)
 scripts/build/slides/
 scripts/build/recordings/
