@@ -54,3 +54,5 @@ __pycache__/
 # Ignore: scripts/build/slides/, scripts/build/segments/ (regenerable intermediates)
 scripts/build/slides/
 scripts/build/segments/
+# User-recorded demo video (lives in repo root, not tracked)
+demo_video.mp4
