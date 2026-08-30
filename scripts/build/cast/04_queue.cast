@@ -1,0 +1,4 @@
+{"version": 2, "width": 120, "height": 30, "timestamp": 1788099440, "env": {"SHELL": "/bin/bash", "TERM": "xterm-256color"}}
+[0.003106, "o", "\u001b[H\u001b[2J\u001b[3J"]
+[0.404479, "o", "=== inspect one pending patch from the approval queue ===\r\n"]
+[8.306822, "o", "id:            e4413948\r\npatch_source:  deterministic\r\nscope files:   ['lib/api.js']\r\nscope depth:   3\r\n\r\n--- patch (unified diff) ---\r\n--- a/lib/api.js\r\n+++ b/lib/api.js\r\n@@ -1,1 +1,1 @@\r\n-// TODO: confirm and remove unused export `fetchProduct`\r\n+// [LatentCode] removed unused export `fetchProduct`\r\n\r\n\r\n--- 15 more pending in queue ---\r\n"]

@@ -1,0 +1,4 @@
+{"version": 2, "width": 120, "height": 30, "timestamp": 1788099449, "env": {"SHELL": "/bin/bash", "TERM": "xterm-256color"}}
+[0.003032, "o", "\u001b[H\u001b[2J\u001b[3J"]
+[0.404568, "o", "=== sectioned regression report (no composite %) ===\r\n"]
+[0.911067, "o", "# LatentCode Regression Report\r\n\r\n## Feature verification\r\n\r\n_No verification results in baseline or current run._\r\n\r\n## Integration health\r\n\r\n_No integration chains declared._\r\n\r\n## Latency\r\n\r\n_No latency data._\r\n\r\n## Static health\r\n\r\n| Metric | Before | After |\r\n|---|---|---|\r\n| Dead exports | 7 | 7 |\r\n| Latent issues (total) | 16 | 16 |\r\n| Issues fixed | 0 | |\r\n| Issues introduced | 0 | |\r\n\r\n### Issues by category\r\n\r\n| Category | Before | After |\r\n|---|---|---|\r\n| agent_shortcut | 8 | 8 |\r\n| broken_integration | 1 | 1 |\r\n| hidden_implementation | 7 | 7 |\r\n\r\n"]
