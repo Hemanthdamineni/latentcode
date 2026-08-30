@@ -1,6 +1,8 @@
 {
   "_comment": "Golden labels for LatentCode's eval harness. Used by `latentcode eval` to compute precision/recall against ground truth. Edit only if you intend to change the ground truth.",
 
+  "_caveat": "These labels were authored with knowledge of the analyzer's output. The 100% score on this golden set is partly a measurement of the analyzer finding the defects it was designed to find. For a real evaluation, the labels should be authored BEFORE running the analyzer (e.g., by a developer who knows the repo is broken but hasn't seen LatentCode's output), and the score becomes a true precision/recall measurement. Treat the current 100% as 'the harness works end-to-end' rather than 'the analyzer is 100% accurate'.",
+
   "static_class": {
     "expected_issues": [
       {"file": "pages/api/todos.js", "line": 7, "subtype": "not_implemented", "category": "agent_shortcut", "must_be_flagged": true},
