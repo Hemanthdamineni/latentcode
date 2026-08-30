@@ -13,8 +13,6 @@ interface Issue {
   symbol?: string;
 }
 
-const API_BASE = process.env.NEXT_PUBLIC_LATENTCODE_API || "http://127.0.0.1:7331";
-
 export default function FindingsPage() {
   const [findings, setFindings] = useState<Issue[]>([]);
   const [summary, setSummary] = useState<any>({});
@@ -23,7 +21,7 @@ export default function FindingsPage() {
   useEffect(() => {
     async function load() {
       try {
-        const res = await fetch(`${API_BASE}/api/findings`);
+        const res = await fetch(`/api/findings`, { cache: "no-store" });
         if (res.ok) {
           const data = await res.json();
           setFindings(data.issues || []);

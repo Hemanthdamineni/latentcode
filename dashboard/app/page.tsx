@@ -4,18 +4,28 @@ import Stat from "@/components/Stat";
 import CategoryBar from "@/components/CategoryBar";
 import IssueRow from "@/components/IssueRow";
 
-const API_BASE = process.env.NEXT_PUBLIC_LATENTCODE_API || "http://127.0.0.1:7331";
-
 export default function Page() {
   const [findings, setFindings] = useState<any>(null);
+  const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function load() {
       try {
-        const res = await fetch(`${API_BASE}/api/findings`);
-        if (res.ok) setFindings(await res.json());
-      } catch {
+        // Same-origin fetch via Next.js API route (proxies to backend).
+        // No CORS issue, no env var needed in the browser.
+        const res = await fetch(`/api/findings`, { cache: "no-store" });
+        if (!res.ok) {
+          const data = await res.json().catch(() => ({}));
+          setError(data.error || `HTTP ${res.status}`);
+          setFindings(null);
+        } else {
+          const data = await res.json();
+          setFindings(data);
+          setError("");
+        }
+      } catch (e: any) {
+        setError(e?.message || String(e));
         setFindings(null);
       } finally {
         setLoading(false);
@@ -28,7 +38,7 @@ export default function Page() {
     return (
       <div className="lc-card">
         <h1 className="text-xl font-semibold mb-2">LatentCode</h1>
-        <p className="text-gray-400 text-sm">Loading findings from {API_BASE}…</p>
+        <p className="text-gray-400 text-sm">Loading findings…</p>
       </div>
     );
   }
@@ -38,7 +48,9 @@ export default function Page() {
       <div className="lc-card">
         <h1 className="text-xl font-semibold mb-2">No findings yet</h1>
         <p className="text-gray-400 text-sm">
-          Start the backend with <code className="text-latent-accent">latentcode serve</code> (default port 7331), then refresh this page.
+          {error
+            ? `Backend error: ${error}. Start it with \`latentcode serve\` then refresh.`
+            : "Start the backend with `latentcode serve` (default port 7331), then refresh this page."}
         </p>
       </div>
     );

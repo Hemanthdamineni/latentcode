@@ -2,8 +2,6 @@
 import { useEffect, useState } from "react";
 import MetricCard from "@/components/MetricCard";
 
-const API_BASE = process.env.NEXT_PUBLIC_LATENTCODE_API || "http://127.0.0.1:7331";
-
 export default function MetricsPage() {
   const [findings, setFindings] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -11,7 +9,7 @@ export default function MetricsPage() {
   useEffect(() => {
     async function load() {
       try {
-        const res = await fetch(`${API_BASE}/api/findings`);
+        const res = await fetch(`/api/findings`, { cache: "no-store" });
         if (res.ok) setFindings(await res.json());
       } catch {
         setFindings(null);
@@ -38,10 +36,10 @@ export default function MetricsPage() {
       <div className="flex flex-col gap-6">
         <header>
           <h1 className="text-2xl font-semibold">Metrics</h1>
-          <p className="text-sm text-gray-400 mt-1">
-            Backend not available at <code>{API_BASE}</code>. Start it with <code>latentcode serve</code>.
-          </p>
         </header>
+        <p className="text-sm text-gray-400 mt-1">
+          Start the backend with <code>latentcode serve</code> (default port 7331), then refresh this page.
+        </p>
       </div>
     );
   }

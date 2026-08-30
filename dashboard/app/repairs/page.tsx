@@ -9,8 +9,6 @@ interface QueueItem {
   patch_source: string;
 }
 
-const API_BASE = process.env.NEXT_PUBLIC_LATENTCODE_API || "http://127.0.0.1:7331";
-
 export default function RepairsPage() {
   const [pending, setPending] = useState<QueueItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -18,13 +16,12 @@ export default function RepairsPage() {
   useEffect(() => {
     async function load() {
       try {
-        const res = await fetch(`${API_BASE}/api/queue`);
+        const res = await fetch(`/api/queue`, { cache: "no-store" });
         if (res.ok) {
           const data = await res.json();
           setPending(data.pending || []);
         }
       } catch {
-        // Fall back: queue not available via API. Show empty state.
         setPending([]);
       } finally {
         setLoading(false);
