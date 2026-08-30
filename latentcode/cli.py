@@ -295,8 +295,8 @@ def main() -> int:
     p_hook.set_defaults(func=cmd_install_hook)
 
     p_verify = sub.add_parser("verify", help="run a verification_spec.yaml against a live project")
-    p_verify.add_argument("repo", help="path to repo with .latentcode/verification_spec.yaml")
-    p_verify.add_argument("--spec", default=None, help="path to verification_spec.yaml (default: <repo>/.latentcode/verification_spec.yaml)")
+    p_verify.add_argument("repo", help="path to repo (looks for verification/verification_spec.yaml)")
+    p_verify.add_argument("--spec", default=None, help="path to verification_spec.yaml (default: <repo>/verification/verification_spec.yaml)")
     p_verify.add_argument("--base-url", default="http://127.0.0.1:3000", help="base URL of the running app")
     p_verify.add_argument("--continue-on-failure", action="store_true", help="don't stop on the first failed action")
     p_verify.set_defaults(func=cmd_verify)
@@ -313,10 +313,10 @@ def main() -> int:
 def cmd_verify(args: argparse.Namespace) -> int:
     from .verification import load_spec, run_verification
     repo = Path(args.repo).resolve()
-    spec_path = Path(args.spec) if args.spec else repo / ".latentcode" / "verification_spec.yaml"
+    spec_path = Path(args.spec) if args.spec else repo / "verification" / "verification_spec.yaml"
     if not spec_path.exists():
         print(f"error: verification_spec not found at {spec_path}", file=sys.stderr)
-        print("create one at <repo>/.latentcode/verification_spec.yaml", file=sys.stderr)
+        print("create one at <repo>/verification/verification_spec.yaml", file=sys.stderr)
         return 1
     spec = load_spec(spec_path)
     print(f"→ Running {len(spec.actions)} action(s) from {spec_path}")

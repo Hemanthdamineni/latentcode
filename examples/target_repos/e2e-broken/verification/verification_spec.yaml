@@ -1,0 +1,30 @@
+# Verification spec for e2e-broken
+# Exercises the create-todo flow that is broken in this repo.
+
+isolation:
+  database: none
+  cleanup: drop_and_recreate
+  parallel: false
+
+actions:
+  - name: "List todos (should be empty)"
+    steps:
+      - method: GET
+        path: /api/todos
+        expect_status: 200
+        save_as: initial
+
+  - name: "Create a todo (POST, fails because handler is a stub)"
+    steps:
+      - method: POST
+        path: /api/todos
+        body: { title: "verification-test" }
+        expect_status: 200
+        save_as: created
+
+  - name: "Verify the todo was created (GET, fails because no list contains it)"
+    steps:
+      - method: GET
+        path: /api/todos
+        expect_contains:
+          - title: "verification-test"
