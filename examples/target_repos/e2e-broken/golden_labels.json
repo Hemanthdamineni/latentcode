@@ -1,7 +1,7 @@
 {
-  "_comment": "Golden labels for LatentCode's eval harness. Used by `latentcode eval` to compute precision/recall against ground truth. Edit only if you intend to change the ground truth.",
+  "_comment": "Golden labels for CodeMend's eval harness. Used by `codemend eval` to compute precision/recall against ground truth. Edit only if you intend to change the ground truth.",
 
-  "_caveat": "These labels were authored with knowledge of the analyzer's output. The 100% score on this golden set is partly a measurement of the analyzer finding the defects it was designed to find. For a real evaluation, the labels should be authored BEFORE running the analyzer (e.g., by a developer who knows the repo is broken but hasn't seen LatentCode's output), and the score becomes a true precision/recall measurement. Treat the current 100% as 'the harness works end-to-end' rather than 'the analyzer is 100% accurate'.",
+  "_caveat": "These labels were authored with knowledge of the analyzer's output. The 100% score on this golden set is partly a measurement of the analyzer finding the defects it was designed to find. For a real evaluation, the labels should be authored BEFORE running the analyzer (e.g., by a developer who knows the repo is broken but hasn't seen CodeMend's output), and the score becomes a true precision/recall measurement. Treat the current 100% as 'the harness works end-to-end' rather than 'the analyzer is 100% accurate'.",
 
   "static_class": {
     "expected_issues": [
@@ -41,7 +41,7 @@
   },
 
   "behavioral_class": {
-    "verification_spec": "examples/target_repos/e2e-broken/.latentcode/verification_spec.yaml",
+    "verification_spec": "examples/target_repos/e2e-broken/.codemend/verification_spec.yaml",
     "expected_actions": [
       {
         "name": "List todos (should be empty)",
@@ -51,7 +51,7 @@
       {
         "name": "Create a todo (POST, fails because handler is a stub)",
         "expected_pass": false,
-        "rationale": "POST /api/todos throws not implemented; LatentCode must surface this as a latent issue"
+        "rationale": "POST /api/todos throws not implemented; CodeMend must surface this as a latent issue"
       },
       {
         "name": "Verify the todo was created (GET, fails because no list contains it)",

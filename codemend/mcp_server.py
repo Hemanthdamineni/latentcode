@@ -1,21 +1,21 @@
-"""LatentCode MCP server.
+"""CodeMend MCP server.
 
 Exposes the analysis + repair pipeline as MCP tools so any agent
-(Claude Code, Cursor, custom harnesses) can drive LatentCode.
+(Claude Code, Cursor, custom harnesses) can drive CodeMend.
 
 Tools:
-    latentcode_scan(repo, phase, judge)
-    latentcode_judge(repo)
-    latentcode_regress(repo, baseline_path)
-    latentcode_approve(findings_dir, patch_id)
-    latentcode_reject(findings_dir, patch_id, reason)
-    latentcode_apply(findings_dir, patch_id)
-    latentcode_queue(findings_dir)
-    latentcode_summary(findings_dir)
+    codemend_scan(repo, phase, judge)
+    codemend_judge(repo)
+    codemend_regress(repo, baseline_path)
+    codemend_approve(findings_dir, patch_id)
+    codemend_reject(findings_dir, patch_id, reason)
+    codemend_apply(findings_dir, patch_id)
+    codemend_queue(findings_dir)
+    codemend_summary(findings_dir)
 
 Run:
-    latentcode-mcp                # stdio transport
-    latentcode-mcp --port 7332    # SSE transport (if mcp[server] installed)
+    codemend-mcp                # stdio transport
+    codemend-mcp --port 7332    # SSE transport (if mcp[server] installed)
 """
 from __future__ import annotations
 
@@ -80,7 +80,7 @@ def tool_scan(repo: str, phase: str = "all", judge: str | None = None, allow_rem
         verdicts = propose_patches(verdicts, repo_p)
         findings["phases"]["review"] = {"verdicts": verdicts}
 
-    out_dir = repo_p / ".latentcode"
+    out_dir = repo_p / ".codemend"
     write_findings(findings, out_dir)
 
     return {
@@ -93,7 +93,7 @@ def tool_scan(repo: str, phase: str = "all", judge: str | None = None, allow_rem
 def tool_judge(repo: str) -> dict:
     """Re-run the LLM/heuristic judge on a previously-scanned repo's candidates."""
     repo_p = Path(repo).resolve()
-    findings = _read_findings(str(repo_p / ".latentcode"))
+    findings = _read_findings(str(repo_p / ".codemend"))
     issues = findings.get("phases", {}).get("static", {}).get("issues", [])
     if not issues:
         return {"error": "no issues in saved findings — run scan first"}
@@ -103,7 +103,7 @@ def tool_judge(repo: str) -> dict:
     ]
     verdicts = review_candidates(candidates, repo_p, provider="heuristic")
     verdicts = propose_patches(verdicts, repo_p)
-    queue = ApprovalQueue(repo_p / ".latentcode" / "approval_queue.json")
+    queue = ApprovalQueue(repo_p / ".codemend" / "approval_queue.json")
     queued = 0
     for cand, v in zip(candidates, verdicts):
         if v.get("verdict") == "real" and v.get("patch"):
@@ -115,7 +115,7 @@ def tool_judge(repo: str) -> dict:
 def tool_regress(repo: str, baseline_path: str | None = None) -> dict:
     """Re-run scan and compare to a baseline findings.json."""
     repo_p = Path(repo).resolve()
-    baseline = Path(baseline_path) if baseline_path else repo_p / ".latentcode" / "findings.json"
+    baseline = Path(baseline_path) if baseline_path else repo_p / ".codemend" / "findings.json"
     if not baseline.exists():
         return {"error": f"baseline not found at {baseline}"}
     pre = json.loads(baseline.read_text("utf-8"))
@@ -171,7 +171,7 @@ def tool_summary(findings_dir: str) -> dict:
 # ---------------------------------------------------------------------------
 
 TOOLS = {
-    "latentcode_scan": {
+    "codemend_scan": {
         "description": "Scan a repo for latent defects. Returns findings path and issue count.",
         "inputSchema": {
             "type": "object",
@@ -185,7 +185,7 @@ TOOLS = {
         },
         "handler": lambda args: tool_scan(args["repo"], args.get("phase", "all"), args.get("judge"), args.get("allow_remote", False)),
     },
-    "latentcode_judge": {
+    "codemend_judge": {
         "description": "Run the judge on existing scan results, queue patches.",
         "inputSchema": {
             "type": "object",
@@ -194,7 +194,7 @@ TOOLS = {
         },
         "handler": lambda args: tool_judge(args["repo"]),
     },
-    "latentcode_regress": {
+    "codemend_regress": {
         "description": "Re-scan and compare to a baseline findings.json.",
         "inputSchema": {
             "type": "object",
@@ -206,7 +206,7 @@ TOOLS = {
         },
         "handler": lambda args: tool_regress(args["repo"], args.get("baseline_path")),
     },
-    "latentcode_approve": {
+    "codemend_approve": {
         "description": "Approve a pending patch in the queue.",
         "inputSchema": {
             "type": "object",
@@ -218,7 +218,7 @@ TOOLS = {
         },
         "handler": lambda args: tool_approve(args["findings_dir"], args["patch_id"]),
     },
-    "latentcode_reject": {
+    "codemend_reject": {
         "description": "Reject a pending patch in the queue.",
         "inputSchema": {
             "type": "object",
@@ -231,7 +231,7 @@ TOOLS = {
         },
         "handler": lambda args: tool_reject(args["findings_dir"], args["patch_id"], args.get("reason", "")),
     },
-    "latentcode_apply": {
+    "codemend_apply": {
         "description": "Apply a patch from the queue to disk (writes files).",
         "inputSchema": {
             "type": "object",
@@ -243,7 +243,7 @@ TOOLS = {
         },
         "handler": lambda args: tool_apply(args["findings_dir"], args["patch_id"]),
     },
-    "latentcode_queue": {
+    "codemend_queue": {
         "description": "Read the approval queue (pending + applied patches).",
         "inputSchema": {
             "type": "object",
@@ -252,7 +252,7 @@ TOOLS = {
         },
         "handler": lambda args: tool_queue(args["findings_dir"]),
     },
-    "latentcode_summary": {
+    "codemend_summary": {
         "description": "Read just the project + summary from a findings.json.",
         "inputSchema": {
             "type": "object",
@@ -278,7 +278,7 @@ def _handle_request(req: dict) -> dict | None:
     if method == "initialize":
         return _jsonrpc_response(req_id, {
             "protocolVersion": "2024-11-05",
-            "serverInfo": {"name": "latentcode", "version": "0.1.0"},
+            "serverInfo": {"name": "codemend", "version": "0.1.0"},
             "capabilities": {"tools": {}},
         })
     if method == "notifications/initialized" or method == "initialized":

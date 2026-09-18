@@ -1,13 +1,13 @@
 # e2e-broken
 
-A full-stack demo with **planted UI/API/handler wiring gaps** for LatentCode's
+A full-stack demo with **planted UI/API/handler wiring gaps** for CodeMend's
 integration eval class. Three classes of defect are present:
 
 1. **UI → API not wired** — `pages/index.js` has a button but never calls `lib/todoApi.js`.
 2. **API client unused** — `lib/todoApi.js` is importable but no page imports it.
 3. **API handler stub** — `pages/api/todos.js` POST throws `not implemented`.
 
-When LatentCode's analyzer runs, it should:
+When CodeMend's analyzer runs, it should:
 - Detect the dead export on `createTodo` / `listTodos`
 - Detect the `not_implemented` stub in `pages/api/todos.js`
 - Detect the wiring gap via the issue graph (button → client → route, but edges are missing)
@@ -22,17 +22,17 @@ Both repairs happen in the same `repair_scope` (BFS depth 2 from the route file)
 
 ```bash
 # 1. Run the verification spec to confirm the actions fail
-latentcode verify .
+codemend verify .
 
 # 2. Scan
-latentcode scan .
+codemend scan .
 
 # 3. Approve + apply the patch
-latentcode repair .latentcode --apply <id>
+codemend repair .codemend --apply <id>
 
 # 4. Re-verify
-latentcode verify .
+codemend verify .
 
 # 5. Regress
-latentcode regress . --baseline .latentcode/findings.json
+codemend regress . --baseline .codemend/findings.json
 ```

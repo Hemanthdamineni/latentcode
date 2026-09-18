@@ -1,5 +1,5 @@
 [project]
-name = "latentcode"
+name = "codemend"
 version = "0.1.0"
 description = "AI-powered analysis that finds and repairs latent defects in software projects"
 requires-python = ">=3.11"
@@ -8,8 +8,8 @@ dependencies = [
 ]
 
 [project.scripts]
-latentcode = "latentcode.cli:main"
-latentcode-mcp = "latentcode.mcp_server:serve_stdio"
+codemend = "codemend.cli:main"
+codemend-mcp = "codemend.mcp_server:serve_stdio"
 
 [project.optional-dependencies]
 dev = ["pytest>=7.0"]
@@ -19,7 +19,7 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
-include = ["latentcode*"]
+include = ["codemend*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

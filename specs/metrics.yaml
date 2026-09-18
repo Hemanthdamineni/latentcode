@@ -1,4 +1,4 @@
-# LatentCode Metric Definitions
+# CodeMend Metric Definitions
 # Each metric has a measured value, units, and a comparator (before/after).
 
 metrics:

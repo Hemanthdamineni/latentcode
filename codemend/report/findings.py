@@ -65,7 +65,7 @@ def _normalize(payload: dict) -> dict:
 
 
 def _render_markdown(findings: dict) -> str:
-    lines = ["# LatentCode Findings", ""]
+    lines = ["# CodeMend Findings", ""]
     project = findings.get("project", {})
     lines.append("## Project")
     lines.append("")

@@ -1,10 +1,10 @@
-"""Integration correctness eval — does LatentCode catch UI/API/handler gaps?
+"""Integration correctness eval — does CodeMend catch UI/API/handler gaps?
 
 Integration issues span multiple files. The eval checks: for each
-golden integration issue, did LatentCode flag at least one issue
+golden integration issue, did CodeMend flag at least one issue
 whose evidence_files match?
 
-This is a softer check than static (because LatentCode's existing
+This is a softer check than static (because CodeMend's existing
 detectors are mostly file-level). A future enhancement: explicitly
 add an `integration_wiring` detector. For v1, we measure what we have.
 """
@@ -40,7 +40,7 @@ class IntegrationClass:
             if not e.get("must_be_flagged", True):
                 continue
             evidence = set(e.get("evidence_files", []))
-            # Did LatentCode flag at least one file in the evidence set?
+            # Did CodeMend flag at least one file in the evidence set?
             if evidence & flagged_files:
                 detected += 1
 

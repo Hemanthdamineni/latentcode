@@ -1,6 +1,6 @@
 # Broken App
 
-A demo Next.js app showcasing latent defects for LatentCode to find.
+A demo Next.js app showcasing latent defects for CodeMend to find.
 
 ## Features
 - Product listing

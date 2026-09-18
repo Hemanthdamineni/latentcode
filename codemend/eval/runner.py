@@ -30,7 +30,7 @@ class EvalReport:
 
     def render_markdown(self) -> str:
         lines = [
-            f"# LatentCode Eval — {Path(self.target_repo).name}",
+            f"# CodeMend Eval — {Path(self.target_repo).name}",
             "",
             "| Class | Score |",
             "|---|---|",

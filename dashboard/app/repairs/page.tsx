@@ -41,7 +41,7 @@ export default function RepairsPage() {
 
       {pending.length === 0 && !loading && (
         <div className="lc-card text-gray-500 text-sm">
-          No pending patches. Run <code className="text-latent-accent">latentcode scan --judge llm</code> to generate them.
+          No pending patches. Run <code className="text-latent-accent">codemend scan --judge llm</code> to generate them.
         </div>
       )}
 

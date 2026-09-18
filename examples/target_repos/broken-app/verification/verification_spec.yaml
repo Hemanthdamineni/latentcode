@@ -1,6 +1,6 @@
-# LatentCode verification spec for broken-app
+# CodeMend verification spec for broken-app
 # Authored per project. Declares the actions to run for E2E verification.
-# LatentCode will not invent endpoints or payloads — only what's here is executed.
+# CodeMend will not invent endpoints or payloads — only what's here is executed.
 
 isolation:
   database: none            # no DB in this app; pass-through

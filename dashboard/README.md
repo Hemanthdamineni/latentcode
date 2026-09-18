@@ -1,20 +1,20 @@
-# LatentCode Dashboard
+# CodeMend Dashboard
 
-Interactive UI for LatentCode findings, dep graph, metrics, and repair queue.
+Interactive UI for CodeMend findings, dep graph, metrics, and repair queue.
 
 ## Run
 
 ```bash
-# 1. Run a scan against a repo (writes .latentcode/ inside it)
-latentcode scan /path/to/repo --judge heuristic
+# 1. Run a scan against a repo (writes .codemend/ inside it)
+codemend scan /path/to/repo --judge heuristic
 
 # 2. Point the dashboard at the findings
 cd dashboard
-LATENTCODE_FINDINGS=/path/to/repo/.latentcode npm run dev
+CODEMEND_FINDINGS=/path/to/repo/.codemend npm run dev
 ```
 
 The dashboard reads `findings.json` and `approval_queue.json` from
-`LATENTCODE_FINDINGS` (defaults to `./.latentcode`).
+`CODEMEND_FINDINGS` (defaults to `./.codemend`).
 
 ## Pages
 
@@ -23,7 +23,7 @@ The dashboard reads `findings.json` and `approval_queue.json` from
 - **Dependency graph** — interactive Cytoscape graph of files/symbols/routes
 - **Metrics** — cold start, latency, working/failing endpoints, peak memory
 - **Repair queue** — approve/reject pending patches (preview UI; the real
-  apply command is `latentcode repair` from the CLI)
+  apply command is `codemend repair` from the CLI)
 
 ## Stack
 

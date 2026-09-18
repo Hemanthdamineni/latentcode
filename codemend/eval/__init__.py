@@ -1,7 +1,7 @@
 """Eval harness — three-class evaluation against golden labels.
 
 Per audit revision Challenge 4: the audit's single-class acceptance
-criterion (planted static defects only) is too narrow. LatentCode's
+criterion (planted static defects only) is too narrow. CodeMend's
 hardest problem is *semantic* — the agent says the feature is
 implemented but it isn't. That requires three classes of evaluation:
 

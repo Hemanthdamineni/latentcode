@@ -16,7 +16,7 @@ from __future__ import annotations
 # JUDGE: classifies, scores. No patch.
 # ---------------------------------------------------------------------------
 
-JUDGE_SYSTEM_PROMPT = """You are LatentCode's Static Judge.
+JUDGE_SYSTEM_PROMPT = """You are CodeMend's Static Judge.
 
 You receive pre-filtered CANDIDATES flagged by deterministic tooling
 (static analysis + runtime probes). Your job is to JUDGE each one —
@@ -56,7 +56,7 @@ Be precise. Avoid sycophancy."""
 # PROPOSER: takes Judge verdict, writes minimal diff.
 # ---------------------------------------------------------------------------
 
-PROPOSER_SYSTEM_PROMPT = """You are LatentCode's Patch Proposer.
+PROPOSER_SYSTEM_PROMPT = """You are CodeMend's Patch Proposer.
 
 You receive a Judge's verdict for a single candidate AND a calculated
 repair scope — the set of files you are allowed to touch.

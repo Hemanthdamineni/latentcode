@@ -1,4 +1,4 @@
-"""Smoke tests for LatentCode.
+"""Smoke tests for CodeMend.
 
 These cover the three behaviors that the v0.2 audit called out as critical:
   1. Project detection returns the right framework (sanity check for the
@@ -17,13 +17,13 @@ from pathlib import Path
 
 import pytest
 
-# Make the latentcode package importable when running from the repo root
+# Make the codemend package importable when running from the repo root
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
-from latentcode.project_detect import detect_project
-from latentcode.static_analyzer.issue_graph import compute_repair_scope, build_issue_graph
-from latentcode.llm_reviewer.proposer import propose_patches, _extract_files_from_patch
+from codemend.project_detect import detect_project
+from codemend.static_analyzer.issue_graph import compute_repair_scope, build_issue_graph
+from codemend.llm_reviewer.proposer import propose_patches, _extract_files_from_patch
 
 
 # ---------------------------------------------------------------------------
@@ -224,8 +224,8 @@ class TestTargetRepos:
         repo = REPO_ROOT / "examples" / "target_repos" / "broken-app"
         if not repo.exists():
             pytest.skip("broken-app example not present")
-        from latentcode.project_detect import detect_project as dp
-        from latentcode.static_analyzer import run_static_analysis
+        from codemend.project_detect import detect_project as dp
+        from codemend.static_analyzer import run_static_analysis
         spec = dp(repo)
         result = run_static_analysis(repo, spec)
         assert len(result["issues"]) > 0
@@ -238,8 +238,8 @@ class TestTargetRepos:
         repo = REPO_ROOT / "examples" / "target_repos" / "e2e-broken"
         if not repo.exists():
             pytest.skip("e2e-broken example not present")
-        from latentcode.project_detect import detect_project as dp
-        from latentcode.static_analyzer import run_static_analysis
+        from codemend.project_detect import detect_project as dp
+        from codemend.static_analyzer import run_static_analysis
         spec = dp(repo)
         result = run_static_analysis(repo, spec)
         issues = result["issues"]
@@ -260,7 +260,7 @@ class TestTargetRepos:
 
 class TestEvalHarness:
     def test_e2e_broken_eval_runs(self):
-        from latentcode.eval import run_eval
+        from codemend.eval import run_eval
         repo = REPO_ROOT / "examples" / "target_repos" / "e2e-broken"
         if not (repo / "golden_labels.json").exists():
             pytest.skip("golden_labels.json not present")

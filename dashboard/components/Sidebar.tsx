@@ -25,7 +25,7 @@ export default function Sidebar() {
         </div>
         <div>
           <div className="text-[13px] font-semibold tracking-[-0.01em] leading-none"
-               style={{ color: "var(--lc-text)" }}>LatentCode</div>
+               style={{ color: "var(--lc-text)" }}>CodeMend</div>
           <div className="text-[10px] uppercase tracking-[0.12em] mt-1"
                style={{ color: "var(--lc-text-mute)" }}>v0.3 · dev</div>
         </div>
@@ -63,10 +63,10 @@ export default function Sidebar() {
       {/* Footer */}
       <div className="px-4 py-3 border-t text-[11px]"
            style={{ borderColor: "var(--lc-border)", color: "var(--lc-text-mute)" }}>
-        <a href="https://github.com/Hemanthdamineni/latentcode"
+        <a href="https://github.com/Hemanthdamineni/codemend"
            className="hover:underline"
            style={{ color: "var(--lc-text-dim)" }}>
-          github.com/Hemanthdamineni/latentcode ↗
+          github.com/Hemanthdamineni/codemend ↗
         </a>
       </div>
     </aside>

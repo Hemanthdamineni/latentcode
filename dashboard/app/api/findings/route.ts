@@ -1,4 +1,4 @@
-// Next.js API route — proxies GET /api/findings to the latentcode serve
+// Next.js API route — proxies GET /api/findings to the codemend serve
 // backend. This avoids CORS issues when the dashboard (port 3000) tries
 // to call the backend (port 7331) from the browser.
 //
@@ -7,7 +7,7 @@
 
 import { NextResponse } from "next/server";
 
-const BACKEND = process.env.LATENTCODE_API_BASE || process.env.NEXT_PUBLIC_LATENTCODE_API || "http://127.0.0.1:7331";
+const BACKEND = process.env.CODEMEND_API_BASE || process.env.NEXT_PUBLIC_CODEMEND_API || "http://127.0.0.1:7331";
 
 export const dynamic = "force-dynamic";  // never cache
 

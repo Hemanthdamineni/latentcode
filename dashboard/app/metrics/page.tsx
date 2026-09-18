@@ -29,7 +29,7 @@ export default function MetricsPage() {
       <div className="lc-card p-6">
         <div className="lc-h2 mb-2">Backend unavailable</div>
         <div className="text-[13px]" style={{ color: "var(--lc-text-dim)" }}>
-          {error || "No data."} Start <code className="lc-mono" style={{ color: "var(--lc-accent)" }}>latentcode serve</code>.
+          {error || "No data."} Start <code className="lc-mono" style={{ color: "var(--lc-accent)" }}>codemend serve</code>.
         </div>
       </div>
     );
@@ -65,7 +65,7 @@ export default function MetricsPage() {
             <div className="text-[14px] lc-mono" style={{ color: "var(--lc-text-mute)" }}>/ 100</div>
           </div>
           <div className="mt-3 text-[11.5px]" style={{ color: "var(--lc-text-dim)" }}>
-            Lower severity issues reduce the score. Run <code className="lc-mono">latentcode regress</code> for a sectioned before/after report.
+            Lower severity issues reduce the score. Run <code className="lc-mono">codemend regress</code> for a sectioned before/after report.
           </div>
         </div>
 

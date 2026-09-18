@@ -1,18 +1,18 @@
-# LatentCode Architecture
+# CodeMend Architecture
 
 ## Module Layout
 
 ```
-LatentCode/
+CodeMend/
 ├── opencode.json              # Foundry agent + sdlc-mcp MCP server
 ├── README.md
 ├── ARCHITECTURE.md            # this file
 ├── specs/
 │   ├── issue_taxonomy.yaml    # issue types, detectors, fix signals
 │   └── metrics.yaml           # success metrics definitions
-├── latentcode/                # Python core (orchestration + analysis)
+├── codemend/                # Python core (orchestration + analysis)
 │   ├── __init__.py
-│   ├── cli.py                 # `latentcode scan <repo>` entry point
+│   ├── cli.py                 # `codemend scan <repo>` entry point
 │   ├── project_detect.py      # detect Next.js / FastAPI / Go / etc.
 │   ├── static_analyzer/       # tooling spine
 │   │   ├── __init__.py
@@ -156,7 +156,7 @@ each role auditable independently.
 
 **Why multi-file?** Per the v0.3 revision, the audit's "only file:line" rule
 was wrong for the central use case. A broken E2E feature whose repair
-crosses files (UI → API client → route handler) is LatentCode's most
+crosses files (UI → API client → route handler) is CodeMend's most
 important category. The Proposer may touch any file in `repair_scope`,
 which is computed by BFS through the issue graph.
 
@@ -171,13 +171,13 @@ useful queue — just with template-quality patches instead of LLM-quality.
 ## Verification (v0.3 — post-revision)
 
 The audit's HTTP-GET-only runtime probe was correct as a safety
-boundary but insufficient as a verification story. LatentCode's central
+boundary but insufficient as a verification story. CodeMend's central
 claim is "did this feature actually work?" — which requires POST, PUT,
 DELETE, and (ideally) UI interactions.
 
 `verification_spec.yaml` is authored per project. Three safety layers:
 
-1. **Declared only** — LatentCode will not invent endpoints or payloads.
+1. **Declared only** — CodeMend will not invent endpoints or payloads.
 2. **Sandboxed by default** — `isolation` block supports env_overrides,
    future DB-swap and container modes.
 3. **Explicit cleanup** — even on failure, the test environment is restored.
@@ -185,7 +185,7 @@ DELETE, and (ideally) UI interactions.
 
 ## Eval Harness (v0.3 — post-revision)
 
-`latentcode eval` runs three classes against a target repo's
+`codemend eval` runs three classes against a target repo's
 `golden_labels.json`:
 
 - **Static** — does the analyzer find planted syntax defects (precision/recall)?

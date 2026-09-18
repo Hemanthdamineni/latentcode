@@ -1,15 +1,15 @@
 ---
-name: latentcode
-description: LatentCode is a hidden-defect analyzer. Use when the user asks to find, fix, or measure latent issues, dead code, agent stubs, broken E2E features, disconnected components, or wants a defect report. Triggers include "find latent issues", "audit my code", "what's broken", "scan for stubs", "diagnose this project", "repair queue".
+name: codemend
+description: CodeMend is a hidden-defect analyzer. Use when the user asks to find, fix, or measure latent issues, dead code, agent stubs, broken E2E features, disconnected components, or wants a defect report. Triggers include "find latent issues", "audit my code", "what's broken", "scan for stubs", "diagnose this project", "repair queue".
 allowed-tools:
-  - Bash(latentcode *)
-  - Bash(latentcode-mcp *)
+  - Bash(codemend *)
+  - Bash(codemend-mcp *)
   - Read
   - Edit
   - Write
 ---
 
-# LatentCode
+# CodeMend
 
 A tool-led analysis system that finds hidden defects in software projects
 (disconnected code, broken end-to-end features, agent shortcuts, missing
@@ -31,22 +31,22 @@ Don't use for: syntax errors, lint, formatting, simple Q&A about code.
 
 ```bash
 # 1. Discover
-latentcode scan <repo> --judge heuristic
-# → writes .latentcode/findings.json + .latentcode/approval_queue.json
+codemend scan <repo> --judge heuristic
+# → writes .codemend/findings.json + .codemend/approval_queue.json
 
 # 2. Inspect
-cat <repo>/.latentcode/findings.md
+cat <repo>/.codemend/findings.md
 # or browse the dashboard:
-latentcode serve <repo>/.latentcode <repo> &
-cd dashboard && LATENTCODE_FINDINGS=<repo>/.latentcode npm run dev
+codemend serve <repo>/.codemend <repo> &
+cd dashboard && CODEMEND_FINDINGS=<repo>/.codemend npm run dev
 
 # 3. Repair (after human approval)
-latentcode repair <repo>/.latentcode --apply <id>
+codemend repair <repo>/.codemend --apply <id>
 # or
-latentcode fix <repo>  # one-shot, no approval
+codemend fix <repo>  # one-shot, no approval
 
 # 4. Measure
-latentcode regress <repo> --baseline baseline.json
+codemend regress <repo> --baseline baseline.json
 # → { fixed_count, new_count, improvement_pct }
 ```
 
@@ -54,13 +54,13 @@ latentcode regress <repo> --baseline baseline.json
 
 | User intent | Command |
 |-------------|---------|
-| "scan / audit / find issues" | `latentcode scan <repo> --judge heuristic` |
-| "show me the dashboard" | `latentcode serve <dir> <repo> &` + dashboard dev |
-| "fix all of it" | `latentcode fix <repo>` (no approval) |
-| "fix this specific one" | `latentcode repair <dir> --apply <id>` |
-| "did my fix work?" | `latentcode regress <repo> --baseline before.json` |
-| "set up auto-scan on commit" | `latentcode install-hook <repo>` |
-| "let me drive it as tools" | register `latentcode-mcp` as an MCP server |
+| "scan / audit / find issues" | `codemend scan <repo> --judge heuristic` |
+| "show me the dashboard" | `codemend serve <dir> <repo> &` + dashboard dev |
+| "fix all of it" | `codemend fix <repo>` (no approval) |
+| "fix this specific one" | `codemend repair <dir> --apply <id>` |
+| "did my fix work?" | `codemend regress <repo> --baseline before.json` |
+| "set up auto-scan on commit" | `codemend install-hook <repo>` |
+| "let me drive it as tools" | register `codemend-mcp` as an MCP server |
 
 ## Output shapes
 
@@ -89,8 +89,8 @@ latentcode regress <repo> --baseline baseline.json
 
 ## Hard rules
 
-- **Always run `latentcode scan` first** before any repair action.
-- **Always run `latentcode regress` after a repair** to measure impact.
+- **Always run `codemend scan` first** before any repair action.
+- **Always run `codemend regress` after a repair** to measure impact.
 - **Never auto-apply patches** without the user explicitly saying
   "fix", "repair", "apply", or "go".
 - **Default to heuristic judge** unless the user has an OpenAI key
@@ -101,49 +101,49 @@ latentcode regress <repo> --baseline baseline.json
 
 ## MCP integration
 
-LatentCode is also available as MCP tools. Add to your MCP config:
+CodeMend is also available as MCP tools. Add to your MCP config:
 
 ```json
 {
   "mcpServers": {
-    "latentcode": {
-      "command": "latentcode-mcp"
+    "codemend": {
+      "command": "codemend-mcp"
     }
   }
 }
 ```
 
-Tools: `latentcode_scan`, `latentcode_judge`, `latentcode_regress`,
-`latentcode_approve`, `latentcode_reject`, `latentcode_apply`,
-`latentcode_queue`, `latentcode_summary`.
+Tools: `codemend_scan`, `codemend_judge`, `codemend_regress`,
+`codemend_approve`, `codemend_reject`, `codemend_apply`,
+`codemend_queue`, `codemend_summary`.
 
 ## Common patterns
 
 ### Audit then report
 ```bash
-latentcode scan <repo> --judge heuristic
+codemend scan <repo> --judge heuristic
 # Read the markdown summary, surface the top 3-5 issues to the user
 ```
 
 ### Repair with measurement
 ```bash
 # Baseline
-latentcode scan <repo> --judge heuristic --out /tmp/baseline
+codemend scan <repo> --judge heuristic --out /tmp/baseline
 # Apply
-latentcode fix <repo> --judge heuristic
+codemend fix <repo> --judge heuristic
 # Measure
-latentcode regress <repo> --baseline /tmp/baseline/findings.json
+codemend regress <repo> --baseline /tmp/baseline/findings.json
 # Report: fixed X, new Y, improvement Z%
 ```
 
 ### Drive from another agent
-Use the MCP tools. `latentcode_scan` → `latentcode_summary` →
-`latentcode_queue` → loop `latentcode_approve` / `latentcode_reject` →
-`latentcode_apply` → `latentcode_regress`.
+Use the MCP tools. `codemend_scan` → `codemend_summary` →
+`codemend_queue` → loop `codemend_approve` / `codemend_reject` →
+`codemend_apply` → `codemend_regress`.
 
 ## Philosophy
 
-LatentCode is **tooling-led, LLM-assisted**. Static analysis builds the
+CodeMend is **tooling-led, LLM-assisted**. Static analysis builds the
 candidate set; the LLM judges semantic intent; runtime probes verify
 truth. Three layers, each catching what the others miss. The skill
 exists to make this orchestration obvious to any agent.

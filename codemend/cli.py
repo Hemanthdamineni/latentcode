@@ -1,13 +1,13 @@
-"""LatentCode CLI.
+"""CodeMend CLI.
 
 Usage:
-    latentcode scan <repo> [--phase static|runtime|all] [--out DIR] [--judge heuristic|llm]
-    latentcode repair <findings_dir> [--apply ID]
-    latentcode regress <repo> [--baseline findings.json]
-    latentcode serve <findings_dir> <repo_root> [--port 7331]
-    latentcode fix <repo>                # one-shot: scan + judge + apply all
-    latentcode install-hook <repo>       # install pre-commit git hook
-    latentcode verify <repo>             # run verification_spec.yaml
+    codemend scan <repo> [--phase static|runtime|all] [--out DIR] [--judge heuristic|llm]
+    codemend repair <findings_dir> [--apply ID]
+    codemend regress <repo> [--baseline findings.json]
+    codemend serve <findings_dir> <repo_root> [--port 7331]
+    codemend fix <repo>                # one-shot: scan + judge + apply all
+    codemend install-hook <repo>       # install pre-commit git hook
+    codemend verify <repo>             # run verification_spec.yaml
 """
 from __future__ import annotations
 
@@ -82,7 +82,7 @@ def cmd_scan(args: argparse.Namespace) -> int:
 
         # Queue real-verdict patches
         if not args.no_queue:
-            queue = ApprovalQueue(repo / ".latentcode" / "approval_queue.json")
+            queue = ApprovalQueue(repo / ".codemend" / "approval_queue.json")
             # Judge shuffles, so pair by candidate_id, not by position
             by_id = {v.get("candidate_id"): v for v in verdicts}
             queued = 0
@@ -106,7 +106,7 @@ def cmd_scan(args: argparse.Namespace) -> int:
                 queued += 1
             print(f"  queued {queued} patches for approval")
 
-    out_dir = Path(args.out) if hasattr(args, "out") and args.out else repo / ".latentcode"
+    out_dir = Path(args.out) if hasattr(args, "out") and args.out else repo / ".codemend"
     out_dir.mkdir(parents=True, exist_ok=True)
     write_findings(findings, out_dir)
     print(f"✓ Wrote findings to {out_dir}")
@@ -144,7 +144,7 @@ def cmd_repair(args: argparse.Namespace) -> int:
 def cmd_regress(args: argparse.Namespace) -> int:
     from .repair.regression_check import run_regression_check, render_markdown
     repo = Path(args.repo).resolve()
-    pre_path = Path(args.baseline) if args.baseline else repo / ".latentcode" / "findings.json"
+    pre_path = Path(args.baseline) if args.baseline else repo / ".codemend" / "findings.json"
     if not pre_path.exists():
         print(f"error: no baseline findings at {pre_path}", file=sys.stderr)
         return 1
@@ -160,7 +160,7 @@ def cmd_regress(args: argparse.Namespace) -> int:
         except (OSError, json.JSONDecodeError):
             pre_ver = None
     post_ver = None
-    post_ver_path = repo / ".latentcode" / "verification_results.json"
+    post_ver_path = repo / ".codemend" / "verification_results.json"
     if post_ver_path.exists():
         try:
             post_ver = json.loads(post_ver_path.read_text(encoding="utf-8"))
@@ -194,14 +194,14 @@ def cmd_fix(args: argparse.Namespace) -> int:
     static = run_static_analysis(repo, spec, max_scope_depth=scope_depth)
     runtime = run_runtime_probe(repo, spec)
     findings = {"project": spec.to_dict(), "phases": {"static": static, "runtime": runtime}}
-    write_findings(findings, repo / ".latentcode")
+    write_findings(findings, repo / ".codemend")
 
     candidates = [{**i, "id": f"{i.get('file', '?')}::{i.get('line', 0)}::{i.get('subtype', '?')}"}
                   for i in static.get("issues", [])]
     verdicts = review_candidates(candidates, repo, provider=args.judge, shuffle=True)
     verdicts = propose_patches(verdicts, repo)
     applied = 0
-    queue = ApprovalQueue(repo / ".latentcode" / "approval_queue.json")
+    queue = ApprovalQueue(repo / ".codemend" / "approval_queue.json")
     # Judge shuffles; pair by candidate_id
     by_id = {v.get("candidate_id"): v for v in verdicts}
     for cand in candidates:
@@ -219,7 +219,7 @@ def cmd_fix(args: argparse.Namespace) -> int:
 
 
 def cmd_install_hook(args: argparse.Namespace) -> int:
-    """Install a pre-commit git hook that runs `latentcode scan`."""
+    """Install a pre-commit git hook that runs `codemend scan`."""
     repo = Path(args.repo).resolve()
     git_dir = repo / ".git"
     if not git_dir.exists():
@@ -229,33 +229,33 @@ def cmd_install_hook(args: argparse.Namespace) -> int:
     hooks_dir.mkdir(exist_ok=True)
     hook_path = hooks_dir / "pre-commit"
     hook_content = """#!/usr/bin/env bash
-# LatentCode pre-commit hook — scans the staged changes for latent issues.
-# Set LATENTCODE_SKIP=1 to bypass.
+# CodeMend pre-commit hook — scans the staged changes for latent issues.
+# Set CODEMEND_SKIP=1 to bypass.
 set -e
-[ -n "$LATENTCODE_SKIP" ] && exit 0
-if ! command -v latentcode >/dev/null 2>&1; then
-  echo "latentcode: command not found, skipping scan" >&2
+[ -n "$CODEMEND_SKIP" ] && exit 0
+if ! command -v codemend >/dev/null 2>&1; then
+  echo "codemend: command not found, skipping scan" >&2
   exit 0
 fi
-echo "→ LatentCode: scanning staged changes"
-latentcode scan . --phase static --judge heuristic --no-queue
+echo "→ CodeMend: scanning staged changes"
+codemend scan . --phase static --judge heuristic --no-queue
 """
     hook_path.write_text(hook_content, encoding="utf-8")
     hook_path.chmod(0o755)
     print(f"✓ Installed pre-commit hook at {hook_path}")
-    print("  bypass with: LATENTCODE_SKIP=1 git commit ...")
+    print("  bypass with: CODEMEND_SKIP=1 git commit ...")
     return 0
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(prog="latentcode")
+    parser = argparse.ArgumentParser(prog="codemend")
     sub = parser.add_subparsers(dest="cmd", required=True)
 
     p_scan = sub.add_parser("scan", help="scan a repo for latent issues")
     p_scan.add_argument("repo", help="path to repo to scan")
     p_scan.add_argument("--phase", choices=["static", "runtime", "all"], default="all")
     p_scan.add_argument("--out", default=None, help="output directory")
-    p_scan.add_argument("--judge", default=None, choices=["heuristic", "llm", "auto"],
+    p_scan.add_argument("--judge", default=None, choices=["heuristic", "llm"],
                         help="run LLM-style review on candidates")
     p_scan.add_argument("--no-queue", action="store_true", help="don't queue patches")
     p_scan.add_argument("--allow-remote", action="store_true",
@@ -265,21 +265,20 @@ def main() -> int:
     p_scan.set_defaults(func=cmd_scan)
 
     p_repair = sub.add_parser("repair", help="review and apply queued patches")
-    p_repair.add_argument("findings_dir", help=".latentcode directory")
+    p_repair.add_argument("findings_dir", help=".codemend directory")
     p_repair.add_argument("--apply", help="patch id to apply")
-    p_repair.add_argument("--dry-run", action="store_true", default=True)
-    p_repair.add_argument("--commit", action="store_true", help="actually write the patch")
+    p_repair.add_argument("--dry-run", action="store_true", default=False)
     p_repair.set_defaults(func=cmd_repair)
 
     p_regress = sub.add_parser("regress", help="re-run scan and compare to prior findings")
     p_regress.add_argument("repo", help="path to repo")
     p_regress.add_argument("--baseline", default=None,
-                            help="path to baseline findings.json (default: <repo>/.latentcode/findings.json)")
+                            help="path to baseline findings.json (default: <repo>/.codemend/findings.json)")
     p_regress.add_argument("--json", action="store_true", help="emit raw JSON instead of Markdown")
     p_regress.set_defaults(func=cmd_regress)
 
     p_serve = sub.add_parser("serve", help="start the dashboard backend (HTTP API)")
-    p_serve.add_argument("findings_dir", help=".latentcode directory")
+    p_serve.add_argument("findings_dir", help=".codemend directory")
     p_serve.add_argument("repo", help="repo root (for /api/apply and /api/rescan)")
     p_serve.add_argument("--host", default="127.0.0.1")
     p_serve.add_argument("--port", type=int, default=7331)
@@ -287,7 +286,7 @@ def main() -> int:
 
     p_fix = sub.add_parser("fix", help="one-shot: scan + judge + apply all real patches")
     p_fix.add_argument("repo", help="path to repo")
-    p_fix.add_argument("--judge", default="heuristic", choices=["heuristic", "llm", "auto"])
+    p_fix.add_argument("--judge", default="heuristic", choices=["heuristic", "llm"])
     p_fix.set_defaults(func=cmd_fix)
 
     p_hook = sub.add_parser("install-hook", help="install a pre-commit git hook")
@@ -321,7 +320,7 @@ def cmd_verify(args: argparse.Namespace) -> int:
     spec = load_spec(spec_path)
     print(f"→ Running {len(spec.actions)} action(s) from {spec_path}")
     result = run_verification(spec, base_url=args.base_url, stop_on_failure=not args.continue_on_failure)
-    out_path = repo / ".latentcode" / "verification_results.json"
+    out_path = repo / ".codemend" / "verification_results.json"
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(result.to_dict(), indent=2, default=str), encoding="utf-8")
     print()

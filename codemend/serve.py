@@ -28,7 +28,7 @@ from .report.findings import write_findings
 
 
 class Handler(BaseHTTPRequestHandler):
-    findings_dir: Path = Path(".latentcode")
+    findings_dir: Path = Path(".codemend")
     repo_root: Path = Path(".")
 
     def log_message(self, format, *args):

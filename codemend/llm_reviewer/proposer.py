@@ -10,7 +10,7 @@ the user has something concrete to review when no LLM is configured.
 
 SCOPE VALIDATION (per revision Challenge 1):
 - Each verdict carries a `repair_scope` computed by BFS through the
-  issue graph (latentcode.static_analyzer.issue_graph.compute_repair_scope).
+  issue graph (codemend.static_analyzer.issue_graph.compute_repair_scope).
 - The Proposer may touch ANY file in the scope, not just the candidate's
   file. This is what enables multi-file E2E repairs.
 - After the LLM/deterministic patch is generated, we extract the files
@@ -189,7 +189,7 @@ def _deterministic_patch(verdict: dict, repo: Path, repair_scope: dict) -> dict:
                 f"+++ b/{file_path}\n"
                 f"@@ -1,1 +1,1 @@\n"
                 f"-// TODO: confirm and remove unused export `{symbol}`\n"
-                f"+// [LatentCode] removed unused export `{symbol}`\n"
+                f"+// [CodeMend] removed unused export `{symbol}`\n"
             ),
             "patch_summary": f"Mark `{symbol}` as removed (heuristic placeholder).",
             "risks": "Symbol may be used via reflection, dynamic import, or as a public API. Verify before merging.",
@@ -205,7 +205,7 @@ def _deterministic_patch(verdict: dict, repo: Path, repair_scope: dict) -> dict:
                     f"--- a/.env.example\n"
                     f"+++ b/.env.example\n"
                     f"@@ -0,0 +1,2 @@\n"
-                    f"+# Added by LatentCode — referenced in: {', '.join(files[:3]) or 'unknown'}\n"
+                    f"+# Added by CodeMend — referenced in: {', '.join(files[:3]) or 'unknown'}\n"
                     f"+{var}=\n"
                 ),
                 "patch_summary": f"Add `{var}` to .env.example so the integration at least declares the dependency.",
@@ -222,7 +222,7 @@ def _deterministic_patch(verdict: dict, repo: Path, repair_scope: dict) -> dict:
                 f"+++ b/{file_path}\n"
                 f"@@ -{line},1 +{line},1 @@\n"
                 f"-throw new Error(\"not implemented\"); // TODO: implement\n"
-                f"+// [LatentCode] stub removed — please implement this handler\n"
+                f"+// [CodeMend] stub removed — please implement this handler\n"
             ),
             "patch_summary": "Comment out the throwing stub so callers stop 500-ing; explicitly mark the gap.",
             "risks": "Replaces a hard error with a silent no-op. Caller may now succeed with empty data.",

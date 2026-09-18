@@ -4,7 +4,7 @@ import Sidebar from "@/components/Sidebar";
 import Topbar from "@/components/Topbar";
 
 export const metadata = {
-  title: "LatentCode",
+  title: "CodeMend",
   description: "AI-powered latent defect finder",
 };
 

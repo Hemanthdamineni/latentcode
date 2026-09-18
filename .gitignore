@@ -35,6 +35,10 @@ __pycache__/
 # OpenCode IDE cache
 .opencode/
 
+# Local export archives and runtime lock files
+/*.zip
+.sdlc/workspace.db-*
+
 # Test caches
 .pytest_cache/
 

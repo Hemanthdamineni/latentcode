@@ -1,11 +1,11 @@
-"""Static correctness eval — does LatentCode find the planted syntax defects?
+"""Static correctness eval — does CodeMend find the planted syntax defects?
 
 The static class is the simplest: run the analyzer, compare its output
 against `golden_labels.json -> static_class -> expected_issues`.
 
 Scoring:
   - For each `expected_issues[i]` with `must_be_flagged: true`, check
-    if LatentCode's issues contain a match (file + subtype match).
+    if CodeMend's issues contain a match (file + subtype match).
   - precision = flagged_and_correct / total_flagged
   - recall = flagged_and_correct / total_expected_to_flag
   - score = (precision + recall) / 2  (F1)

@@ -1,4 +1,4 @@
-# LatentCode
+# CodeMend
 
 > AI-powered system that finds hidden software defects — disconnected code, broken end-to-end features, agent shortcuts, optimization gaps, and security risks — then diagnoses, repairs, and measures concrete improvements.
 
@@ -20,17 +20,17 @@ Standard linters and formatters miss most of these. Tests pass because they were
 
 ## Interface — five ways to use it
 
-LatentCode exposes the same pipeline through five layers so it fits any workflow:
+CodeMend exposes the same pipeline through five layers so it fits any workflow:
 
 | Layer | What it is | When to use |
 |-------|------------|-------------|
-| **1. CLI** | `latentcode` command — `scan`, `repair`, `regress`, `fix`, `serve`, `install-hook` | Scripts, CI, terminal-first dev |
-| **2. MCP server** | `latentcode-mcp` — 8 tools (`latentcode_scan`, `latentcode_approve`, ...) | Other agents (Claude Code, Cursor, custom) |
-| **3. Skill** | `skills/latentcode/SKILL.md` — invoke as `/latentcode` from any skills-aware agent | Conversational agent workflows |
-| **4. Git hook** | `latentcode install-hook` — pre-commit scan | Auto-scan on every commit |
-| **5. Dashboard** | `latentcode serve` + Next.js UI — review, approve, apply patches | Human-in-the-loop review |
+| **1. CLI** | `codemend` command — `scan`, `repair`, `regress`, `fix`, `serve`, `install-hook` | Scripts, CI, terminal-first dev |
+| **2. MCP server** | `codemend-mcp` — 8 tools (`codemend_scan`, `codemend_approve`, ...) | Other agents (Claude Code, Cursor, custom) |
+| **3. Skill** | `skills/codemend/SKILL.md` — invoke as `/codemend` from any skills-aware agent | Conversational agent workflows |
+| **4. Git hook** | `codemend install-hook` — pre-commit scan | Auto-scan on every commit |
+| **5. Dashboard** | `codemend serve` + Next.js UI — review, approve, apply patches | Human-in-the-loop review |
 
-All five layers share the same on-disk state: `<repo>/.latentcode/{findings.json, approval_queue.json, findings.md}`.
+All five layers share the same on-disk state: `<repo>/.codemend/{findings.json, approval_queue.json, findings.md}`.
 
 ### CLI quick reference
 
@@ -39,25 +39,25 @@ All five layers share the same on-disk state: `<repo>/.latentcode/{findings.json
 pip install -e .
 
 # Discover
-latentcode scan ~/projects/myapp --judge heuristic
-cat ~/projects/myapp/.latentcode/findings.md
+codemend scan ~/projects/myapp --judge heuristic
+cat ~/projects/myapp/.codemend/findings.md
 
 # Review via dashboard
-latentcode serve ~/projects/myapp/.latentcode ~/projects/myapp &
-cd dashboard && LATENTCODE_FINDINGS=~/projects/myapp/.latentcode npm run dev
+codemend serve ~/projects/myapp/.codemend ~/projects/myapp &
+cd dashboard && CODEMEND_FINDINGS=~/projects/myapp/.codemend npm run dev
 
 # Apply (one patch)
-latentcode repair ~/projects/myapp/.latentcode --apply <id>
+codemend repair ~/projects/myapp/.codemend --apply <id>
 
 # Or one-shot (no approval)
-latentcode fix ~/projects/myapp
+codemend fix ~/projects/myapp
 
 # Measure impact
-latentcode regress ~/projects/myapp --baseline baseline.json
+codemend regress ~/projects/myapp --baseline baseline.json
 
 # Auto-scan on every commit
-latentcode install-hook ~/projects/myapp
-# bypass: LATENTCODE_SKIP=1 git commit ...
+codemend install-hook ~/projects/myapp
+# bypass: CODEMEND_SKIP=1 git commit ...
 ```
 
 ### MCP server
@@ -66,24 +66,24 @@ latentcode install-hook ~/projects/myapp
 // Add to ~/.config/Claude/claude_desktop_config.json or similar
 {
   "mcpServers": {
-    "latentcode": { "command": "latentcode-mcp" }
+    "codemend": { "command": "codemend-mcp" }
   }
 }
 ```
 
 Tools exposed:
-- `latentcode_scan(repo, phase, judge)`
-- `latentcode_judge(repo)`
-- `latentcode_regress(repo, baseline_path)`
-- `latentcode_queue(findings_dir)`
-- `latentcode_summary(findings_dir)`
-- `latentcode_approve(findings_dir, patch_id)`
-- `latentcode_reject(findings_dir, patch_id, reason)`
-- `latentcode_apply(findings_dir, patch_id)`
+- `codemend_scan(repo, phase, judge)`
+- `codemend_judge(repo)`
+- `codemend_regress(repo, baseline_path)`
+- `codemend_queue(findings_dir)`
+- `codemend_summary(findings_dir)`
+- `codemend_approve(findings_dir, patch_id)`
+- `codemend_reject(findings_dir, patch_id, reason)`
+- `codemend_apply(findings_dir, patch_id)`
 
 ### Skill
 
-Drop `skills/latentcode/SKILL.md` into your agent's skills directory. Invoke as `/latentcode scan <repo>` etc. The skill encodes the decision rules for which command to use when.
+Drop `skills/codemend/SKILL.md` into your agent's skills directory. Invoke as `/codemend scan <repo>` etc. The skill encodes the decision rules for which command to use when.
 
 ## Architecture
 

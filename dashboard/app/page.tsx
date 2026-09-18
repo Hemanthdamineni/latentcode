@@ -45,7 +45,7 @@ export default function Page() {
         <div className="lc-h2 mb-2">Backend unavailable</div>
         <div className="text-[13px]" style={{ color: "var(--lc-text-dim)" }}>
           {error ? `Error: ${error}` : "No data."} Run{" "}
-          <code className="lc-mono" style={{ color: "var(--lc-accent)" }}>latentcode serve</code>{" "}
+          <code className="lc-mono" style={{ color: "var(--lc-accent)" }}>codemend serve</code>{" "}
           in another terminal, then refresh.
         </div>
       </div>

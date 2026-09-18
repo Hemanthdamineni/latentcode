@@ -2,11 +2,11 @@
 
 Per audit revision Challenge 2: the runtime prober is no longer HTTP-GET
 only. The user authors a `verification_spec.yaml` that declares exactly
-which actions to run, and LatentCode executes them in a sandbox with
+which actions to run, and CodeMend executes them in a sandbox with
 DB isolation + automatic cleanup.
 
 Three safety properties:
-  1. Declared only — LatentCode will not invent endpoints or payloads
+  1. Declared only — CodeMend will not invent endpoints or payloads
   2. Sandboxed by default — DB swap, loopback-only binding
   3. Explicit cleanup — even on failure, the test environment is restored
 

@@ -1,14 +1,14 @@
-"""Behavioral correctness eval — does LatentCode identify which actions
+"""Behavioral correctness eval — does CodeMend identify which actions
 correctly fail and which correctly pass?
 
 The behavioral class runs the verification spec against the broken repo
 (no live server, so all actions that depend on a real handler will
-fail). Then it checks LatentCode's findings: did the analyzer flag
+fail). Then it checks CodeMend's findings: did the analyzer flag
 the actions that are expected to fail?
 
 Scoring:
   - For each `expected_actions[i]` with `expected_pass: false`, did
-    LatentCode flag at least one issue that would cause this action
+    CodeMend flag at least one issue that would cause this action
     to fail? (matched by category or file)
   - score = detected_expected_failures / total_expected_failures
 """
@@ -28,7 +28,7 @@ class BehavioralClass:
         flagged = result.get("issues", [])
 
         # The behavioral class checks: for each action that is expected
-        # to fail, did LatentCode flag the underlying issue?
+        # to fail, did CodeMend flag the underlying issue?
         actions = labels.get("expected_actions", [])
         if not actions:
             return ClassScore(name="behavioral", score=1.0, detail={"note": "no behavioral actions in golden set"})
@@ -37,7 +37,7 @@ class BehavioralClass:
         if not expected_failures:
             return ClassScore(name="behavioral", score=1.0, detail={"note": "no expected failures"})
 
-        # Heuristic: an expected failure is "detected" if LatentCode
+        # Heuristic: an expected failure is "detected" if CodeMend
         # flagged at least one issue in any of the action's evidence files
         # OR the action's expected_pass=false is matched by a stub/etc.
         detected = 0

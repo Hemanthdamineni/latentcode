@@ -83,7 +83,7 @@ def render_markdown(report: dict) -> str:
 
     This is the primary output the user sees — not the JSON.
     """
-    lines = ["# LatentCode Regression Report", ""]
+    lines = ["# CodeMend Regression Report", ""]
 
     # 1. Feature verification
     fv = report.get("feature_verification", {})
